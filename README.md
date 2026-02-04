@@ -1,18 +1,22 @@
-📖 À propos de Dienst
-Dienst révolutionne la prestation de services en réunissant le meilleur des deux mondes au sein d'un écosystème unique.
+📖 Présentation de l’application Dienst
 
-Dans un marché fragmenté où l'on utilise une application pour trouver un graphiste et une autre pour trouver un électricien, Dienst brise les silos. Que vous ayez besoin d'un développeur web à l'autre bout du monde pour votre start-up ou d'un plombier au coin de la rue pour une urgence domestique, nous vous connectons instantanément avec des experts vérifiés.
+Dienst est une application qui facilite la recherche de services près de chez vous.
+Fini de chercher un plombier sur une appli et un déménageur sur une autre : avec Dienst, tout est regroupé au même endroit. Vous pouvez rapidement trouver des experts fiables pour vos besoins quotidiens.
+Ce que vous pouvez trouver sur Dienst :
 
-Notre mission est simple : supprimer les barrières. Avec Dienst, trouvez, réservez et payez n'importe quel service en toute confiance, via une interface unique, fluide et sécurisée.
+🛠️ Plomberie et bricolage
+🌿 Jardinage et entretien extérieur
+🧹 Nettoyage et entretien de maison
+🚚 Déménagement et aide au transport
+🏡 Soins à domicile
+🔧 Mécanique et réparation
 
+Comment ça marche ?
 
-Dienst répond à la demande croissante de flexibilité et d'accessibilité dans le secteur des services. Nous ne nous contentons pas de services numériques ; nous intégrons le monde physique.
+Cherchez le service dont vous avez besoin.
+Trouvez un professionnel près de chez vous.
+Réservez et payez facilement via l’application.
 
-Une offre hybride sans précédent
-Là où des plateformes comme Fiverr se limitent au numérique et d'autres comme TaskRabbit se limitent au manuel, Dienst couvre l'intégralité du spectre :
-
-#💻 Services Numériques & Créatifs : Développement Web, Design Graphique, Marketing Digital, Traduction, Montage Vidéo, Coaching en ligne.
-
-#🛠️ Services Physiques & Locaux : Bricolage, Plomberie, Jardinage, Déménagement, Nettoyage, Soins à domicile, Mécanique.
+Dienst rend tout simple et rapide pour gérer vos tâches du quotidien !
 
 
