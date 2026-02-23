@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Service TN</title>
+    
+    <link rel="stylesheet" href="../stylesheets/HowItWorks.css">
+    <link rel="stylesheet" href="../stylesheets/SignupPage.css">
+    <link rel="stylesheet" href="../LoginPopUp/LoginLogique.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav>
+            <h1>SERVICE TN</h1>
+            <a href="../Pages/HomePage.html">Home</a>
+            <a href="">Explore Services</a>
+            <a href="../Pages/HowItWorks.html">How it works</a>
+            <a href="">Become a Seller</a>
+        </nav>
+    </header>
+
+    <main class="signup-split-container">
+        
+        <div class="signup-form-side">
+            <div class="form-wrapper">
+                <h2>Create your account</h2>
+                <p class="subtitle">Join Service TN to connect with top-tier professionals and clients.</p>
+
+                <div class="user-toggle signup-toggle">
+                    <button class="toggle-btn active" id="signup-client-btn">I am a Client</button>
+                    <button class="toggle-btn" id="signup-provider-btn">I am a Provider</button>
+                </div>
+
+                <form id="advanced-signup-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="location">Location</label>
+                            <select id="location" required>
+                                <option value="" disabled selected>Select your city...</option>
+                                <option value="TN">Tunis</option>
+                                <option value="SO">Sousse</option>
+                                <option value="SF">Sfax</option>
+                                <option value="AR">Ariana</option>
+                                <option value="BE">Béja</option>
+                                <option value="BI">Bizerte</option>
+                                <option value="GA">Gabès</option>
+                                <option value="GO">Gafsa</option>
+                                <option value="KR">Kairouan</option>
+                                <option value="KA">Kasserine</option>
+                                <option value="KE">Kebili</option>
+                                <option value="MA">Mahdia</option>
+                                <option value="MN">Manouba</option>
+                                <option value="ME">Medenine</option>
+                                <option value="MO">Monastir</option>
+                                <option value="NB">Nabeul</option>
+                                <option value="SB">Sidi Bouzid</option>
+                                <option value="SI">Siliana</option>
+                                <option value="TA">Tataouine</option>
+                                <option value="TO">Tozeur</option>
+                                <option value="ZA">Zaghouan</option>
+                                <option value="BA">Ben Arous</option>
+                                <option value="KEF">Kef</option>
+                                <option value="JE">Jendouba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="provider-fields" class="hidden-section">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="serviceCategory">Service Category</label>
+                                <select id="serviceCategory">
+                                    <option value="" disabled selected>Select your trade...</option>
+                                    <option value="plumber">Plumbing</option>
+                                    <option value="electrician">Electrical</option>
+                                    <option value="cleaner">Cleaning</option>
+                                    <option value="painter">Painting</option>
+                                    <option value="carpenter">Carpentry</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="experience">Years of Experience</label>
+                                <input type="number" id="experience" placeholder="e.g. 5" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="address">Full Address</label>
+                        <input type="text" id="address" placeholder="e.g. Route El Ain, Sfax" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn-large">Create Account</button>
+                </form>
+                <br>
+                <p class="signup-link">already have an account? <a href="#" id="login-btn">Login In</a></p>
+            </div>
+        </div>
+
+        <div class="signup-visual-side">
+            <div class="visual-content">
+                <div class="visual-img-container">
+                    <img src="../images/home_page.jpg" alt="Join Service TN">
+                </div>
+                <h3>Fast, Insured, Expert Everyday Repairs.</h3>
+                <p>Join thousands of Tunisians already using Service TN to get things done securely and professionally.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h2 class="logo">Service TN</h2>
+                <p>Helping you find an expert for your daily needs</p>
+                <div class="social-icons">
+                    <span>🌐</span>
+                    <span>💬</span>
+                    <span>✳</span>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>ServiceTN</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Trust & Safety</a></li>
+                    <li><a href="#">Selling on SeviceTN</a></li>
+                    <li><a href="#">Buying on ServiceTN</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="#">Painting</a></li>
+                    <li><a href="#">Cleaning</a></li>
+                    <li><a href="#">Carpentry</a></li>
+                    <li><a href="#">plumbery</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 ServiceTN Inc. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Accessibility</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Welcome Back</h2>
+            <form>
+                <input type="email" placeholder="Email address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="submit-btn">Log In</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="../Pages/SignUp.html">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script src="../LoginPopUp/loginLogique.js"></script>
+    <script src="../Scripts/Singup.js"></script>
+
+</body>
+</html>
