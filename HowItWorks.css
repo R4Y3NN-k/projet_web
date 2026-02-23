@@ -158,11 +158,18 @@ body {
   transition: var(--transition);
   background: transparent;
   color: var(--text-muted);
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.toggle-btn:hover{
+  background-color: #d1ebf5;
 }
 
 .toggle-btn.active {
   background: var(--primary);
   color: var(--white);
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .steps-container {

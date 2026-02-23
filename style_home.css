@@ -85,24 +85,24 @@ body {
   font-size: 0.85rem;
 }
 
-.nav-right .login {
+.login {
   background: transparent;
   color: var(--white);
   border: 1px solid rgba(255,255,255,0.4);
+  margin-right: 10px;
 }
-
-.nav-right .login:hover {
+.login:hover {
   background: var(--white);
   color: var(--dark);
 }
 
-.nav-right .signUp {
-  background: var(--primary); /* Blue Sign Up */
+.signUp {
+  background: var(--primary);
   border: none;
   color: var(--white);
 }
 
-.nav-right .signUp:hover {
+.signUp:hover {
   background: var(--primary-dark);
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
@@ -361,3 +361,4 @@ main section:nth-of-type(3) {
     .footer-container { grid-template-columns: 1fr 1fr; }
     main section:first-of-type div { display: flex; flex-direction: column; width: 100%; }
 }
+
