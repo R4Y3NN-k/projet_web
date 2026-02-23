@@ -15,7 +15,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet1.png" alt="Discover Opportunities">
+                        <img src="../images/projet1.png" alt="Discover Opportunities">
                         <span class="step-tag">Step 01</span>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card reverse">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet2.png" alt="Pitch">
+                        <img src="../images/projet2.png" alt="Pitch">
                         <span class="step-tag">Step 02</span>
                     </div>
                 </div>
@@ -41,7 +41,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet3.png" alt="Work">
+                        <img src="../images/projet3.png" alt="Work">
                         <span class="step-tag">Step 03</span>
                     </div>
                 </div>
@@ -54,7 +54,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card reverse">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet4.png" alt="Get Paid">
+                        <img src="../images/projet4.png" alt="Get Paid">
                         <span class="step-tag">Step 04</span>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet1.png" alt="Discover">
+                        <img src="../images/projet1.png" alt="Discover">
                         <span class="step-tag">Step 01</span>
                     </div>
                 </div>
@@ -94,7 +94,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card reverse">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet2.png" alt="Connect">
+                        <img src="../images/projet2.png" alt="Connect">
                         <span class="step-tag">Step 02</span>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet3.png" alt="Escrow">
+                        <img src="../images/projet3.png" alt="Escrow">
                         <span class="step-tag">Step 03</span>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ document.addEventListener("click", (event) => {
             <div class="step-card reverse">
                 <div class="step-visual">
                     <div class="img-box">
-                        <img src="images/projet4.png" alt="Review">
+                        <img src="../images/projet4.png" alt="Review">
                         <span class="step-tag">Step 04</span>
                     </div>
                 </div>
