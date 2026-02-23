@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="HowItWorks.css">
+    <link rel="stylesheet" href="LoginPopUp/LoginLogique.css">
 </head>
 <body>
 
@@ -17,7 +18,7 @@
             <a href="">Explore Services</a>
             <a href="">Become a Seller</a>
             <div class="nav-right">
-                <button class="login">Login</button>
+                <button class="login" id="login-btn">Login</button>
                 <button class="signUp">Sign Up</button>
             </div>
         </nav>
@@ -155,6 +156,19 @@
             </div>
         </div>
     </footer>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Welcome Back</h2>
+            <form>
+                <input type="email" placeholder="Email address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="submit-btn">Log In</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="/signup.html">Sign Up</a></p>
+        </div>
+    </div>
     <script src="HowItWorks.js"></script>
+    <script src="LoginPopUp/loginLogique.js"></script>
 </body>
 </html>
