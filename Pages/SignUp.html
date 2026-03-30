@@ -4,22 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Service TN</title>
-    
+    <link rel="stylesheet" href="../stylesheets/global.css">   
     <link rel="stylesheet" href="../stylesheets/HowItWorks.css">
     <link rel="stylesheet" href="../stylesheets/SignupPage.css">
     <link rel="stylesheet" href="../LoginPopUp/LoginLogique.css">
 </head>
 <body>
 
-    <header class="header">
-        <nav>
-            <h1>SERVICE TN</h1>
-            <a href="../Pages/HomePage.html">Home</a>
-            <a href="">Explore Services</a>
-            <a href="../Pages/HowItWorks.html">How it works</a>
-            <a href="">Become a Seller</a>
-        </nav>
-    </header>
+<header class="header">
+  <nav>
+    <a href="../Pages/HomePage.html" class="logo">ServiceTN</a>
+    <div class="nav-links">
+      <a href="../Pages/HomePage.html">Home</a>
+      <a href="">Explore Services</a>
+      <a href="../Pages/HowItWorks.html">How it Works</a>
+      <a href="../Pages/becomeSeller.html">Become a Seller</a>
+    </div>
+    <div class="nav-right">
+      <button class="login" id="login-btn">Login</button>
+    </div>
+  </nav>
+</header>
 
     <main class="signup-split-container">
         
@@ -140,11 +145,13 @@
 
     </main>
 
-    <footer class="footer">
+      <footer class="footer">
         <div class="footer-container">
             <div class="footer-about">
                 <h2 class="logo">Service TN</h2>
-                <p>Helping you find an expert for your daily needs</p>
+                <p>
+                    Helping you find an expert for your daily needs
+                </p>
                 <div class="social-icons">
                     <span>🌐</span>
                     <span>💬</span>
@@ -190,6 +197,8 @@
             </div>
         </div>
     </footer>
+
+     
 
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
