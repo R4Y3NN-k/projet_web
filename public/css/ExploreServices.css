@@ -1,0 +1,177 @@
+/* =========================================
+   EXPLORE SERVICES PAGE STYLES
+   ========================================= */
+
+/* Hero Search Section */
+.explore-hero {
+    background-color: var(--gray-bg);
+    padding: 80px 5% 100px;
+    text-align: center;
+}
+
+.explore-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.explore-hero p {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Search Bar Container */
+.explore-search-bar {
+    display: inline-flex;
+    background: var(--white);
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.explore-search-bar input,
+.explore-search-bar select {
+    padding: 16px 20px;
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    flex: 1;
+    min-width: 200px;
+    background: var(--gray-bg);
+    transition: var(--transition);
+}
+
+.explore-search-bar input:focus,
+.explore-search-bar select:focus {
+    background: var(--white);
+    border-color: var(--primary);
+}
+
+.explore-search-bar button {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 0 40px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.explore-search-bar button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Services Grid Section */
+.services-section {
+    padding: 80px 5%;
+    max-width: 1200px;
+    margin: -60px auto 0; /* Pulls the grid up over the gray hero background */
+    position: relative;
+    z-index: 10;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Individual Service Card */
+.service-card {
+    background: var(--white);
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    transition: var(--transition);
+}
+
+.service-card:hover .service-icon {
+    background: var(--primary);
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.service-card h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    flex-grow: 1;
+}
+
+.view-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid var(--primary-light);
+    color: var(--primary);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.service-card:hover .view-btn {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .explore-hero h1 { font-size: 2.2rem; }
+    .explore-search-bar { flex-direction: column; }
+    .explore-search-bar button { padding: 16px; }
+    .services-section { margin-top: 0; padding-top: 40px; }
+}

@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}How It Works{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/howItWorks.css') }}">
+{% endblock %}
+
+{% block body %}
+<main>
+        <section class="hero-section">
+            <h1>Simple. Secure. Global.</h1>
+            <h3>Our platform makes hiring and working protected and seamless.</h3>
+            <div class="user-toggle">
+                <button class="toggle-btn active" id="ClientPage">For Clients</button>
+                <button class="toggle-btn" id="ProvidersPage">For Providers</button>
+            </div>
+        </section>
+
+        <section class="steps-container">
+            <div class="step-card">
+                <div class="step-visual">
+                    <div class="img-box">
+                        <img src="{{ asset('img/projet1.png') }}" alt="Discover">
+                        <span class="step-tag">Step 01</span>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <h2>Find your <span class="blue-text">Need</span> <div class="step-circle">1</div></h2>
+                    <p>Search through thousands of verified experts or post a specific job request. Our filters help you find the perfect match by skill and budget.</p>
+                </div>
+            </div>
+
+            <div class="step-card reverse">
+                <div class="step-visual">
+                    <div class="img-box">
+                        <img src="{{ asset('img/projet2.png') }}" alt="Connect">
+                        <span class="step-tag">Step 02</span>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <h2>Connect & <span class="blue-text">Collab</span> <div class="step-circle">2</div></h2>
+                    <p>Interview candidates through secure messaging. Review portfolios and set clear milestones before the work begins.</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-visual">
+                    <div class="img-box">
+                        <img src="{{ asset('img/projet3.png') }}" alt="Escrow">
+                        <span class="step-tag">Step 03</span>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <h2>Pay with <span class="blue-text">Trust</span> <div class="step-circle">3</div></h2>
+                    <p>We hold project funds in a secure escrow account. Funds are only released when you approve the final result.</p>
+                </div>
+            </div>
+
+            <div class="step-card reverse">
+                <div class="step-visual">
+                    <div class="img-box">
+                        <img src="{{ asset('img/projet4.png') }}" alt="Review">
+                        <span class="step-tag">Step 04</span>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <h2>Approve & <span class="blue-text">Review</span> <div class="step-circle">4</div></h2>
+                    <p>Review the final output. Once you are happy, release the payment and leave a review to help the community grow.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="security-section">
+            <div class="sec-header">
+                <span class="sec-badge">SECURITY FIRST</span>
+                <h2>Your safety is our priority</h2>
+            </div>
+            <div class="sec-grid">
+                <div class="sec-card">
+                    <i class="fas fa-id-card"></i>
+                    <h4>Identity Check</h4>
+                    <p>Multi-step verification for all professional profiles.</p>
+                </div>
+                <div class="sec-card featured">
+                    <i class="fas fa-lock"></i>
+                    <h4>Escrow Protection</h4>
+                    <p>Funds are held safely until milestones are completed.</p>
+                </div>
+                <div class="sec-card">
+                    <i class="fas fa-gavel"></i>
+                    <h4>24/7 Support</h4>
+                    <p>Dedicated team to mediate and resolve disputes.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/HowItWorks.js') }}"></script>
+{% endblock %}

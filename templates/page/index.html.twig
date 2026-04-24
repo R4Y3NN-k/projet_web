@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service TN - Home{% endblock %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('css/Home.css') }}">
+    
+    <link rel="stylesheet" href="{{ asset('css/loginLogique.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section>  
+        <h1>Any Service</h1>
+        <h3>Fast, Insured, Expert Everyday Repairs</h3>
+        <div>
+            <input type="text" placeholder="What service do you need">
+            <select name="location" id="location">
+                <option value="TN">Tunis</option>
+                <option value="SO">Sousse</option>
+                <option value="SF">Sfax</option>
+                <option value="AR">Ariana</option>
+                <option value="BE">Béja</option>
+                <option value="BI">Bizerte</option>
+                <option value="GA">Gabès</option>
+                <option value="GO">Gafsa</option>
+                <option value="KR">Kairouan</option>
+                <option value="KA">Kasserine</option>
+                <option value="KE">Kebili</option>
+                <option value="MA">Mahdia</option>
+                <option value="MN">Manouba</option>
+                <option value="ME">Medenine</option>
+                <option value="">Monastir</option>
+                <option value="NB">Nabeul</option>
+                <option value="SB">Sidi Bouzid</option>
+                <option value="SI">Siliana</option>
+                <option value="TA">Tataouine</option>
+                <option value="TO">Tozeur</option>
+                <option value="ZA">Zaghouan</option>
+                <option value="BA">Ben Arous</option>
+                <option value="KE">Kef</option>
+                <option value="JE">Jendouba</option>
+            </select>
+            <button>Search</button>
+        </div> 
+    </section>
+
+    <section>
+        <h1>Popular Categories</h1>
+        <div class="categories-wrapper"></div>
+            <div class="categories">
+                <div class="category">
+                    <img src="{{ asset('img/plumber.jpg') }}" alt="Category 1">
+                    <p>Plumber</p>
+                </div>
+                <div class="category">
+                    <img src="{{ asset('img/electrician.jpg') }}" alt="Category 2">
+                    <p>Electrician</p>
+                </div>
+                <div class="category">
+                    <img src="{{ asset('img/cleaner.png') }}" alt="Category 3">
+                    <p>Cleaner</p>
+                </div>
+                <div class="category">
+                    <img src="{{ asset('img/painter.jpg') }}" alt="Category 4">
+                    <p>Painting</p>
+                </div>
+                <div class="category">
+                    <img src="{{ asset('img/carpnter.jpg') }}" alt="Category 5">
+                    <p>Carpentry</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h1>Top Providers</h1>
+        <div class="providers">
+            <div class="provider">
+                <img src="{{ asset('img/moudir.jpeg') }}" alt="Provider 1">
+                <p>ELMOUDIR</p>
+                <span>Plumber</span>
+            </div>
+            <div class="provider">
+                <img src="{{ asset('img/yahya.jpeg') }}" alt="Provider 2">
+                <p>Dahouathi</p>
+                <span>Electrician</span>
+            </div>
+            <div class="provider">
+                <img src="{{ asset('img/charadi.jpeg') }}" alt="Provider 3">
+                <p>Charadi</p>
+                <span>Cleaner</span>
+            </div>
+            <div class="provider">
+                <img src="{{ asset('img/khedher.jpeg') }}" alt="Provider 4">
+                <p>khedher</p>
+                <span>Painter</span>
+            </div>
+        </div>
+    </section>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Welcome Back</h2>
+            <form>
+                <input type="email" placeholder="Email address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="submit-btn">Log In</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="{{ path('app_sign_up') }}">Sign Up</a></p>
+        </div>
+    </div>
+{% endblock %}

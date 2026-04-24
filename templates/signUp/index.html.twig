@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{# FIXED 1: Changed 'buttons' to 'header_buttons' to correctly hide them #}
+{% block header_buttons %}{% endblock %}
+
+{% block stylesheets %}
+    {# FIXED 2: Updated filenames to exactly match your uploaded CSS files #}
+    <link rel="stylesheet" href="{{ asset('css/signUp.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/howItWorks.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="signup-split-container">
+        
+        <div class="signup-form-side">
+            <div class="form-wrapper">
+                <h2>Create your account</h2>
+                <p class="subtitle">Join Service TN to connect with top-tier professionals and clients.</p>
+
+                <div class="user-toggle signup-toggle">
+                    <button class="toggle-btn active" id="signup-client-btn">I am a Client</button>
+                    <button class="toggle-btn" id="signup-provider-btn">I am a Provider</button>
+                </div>
+
+                <form id="advanced-signup-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="location">Location</label>
+                            <select id="location" required>
+                                <option value="" disabled selected>Select your city...</option>
+                                <option value="TN">Tunis</option>
+                                <option value="SO">Sousse</option>
+                                <option value="SF">Sfax</option>
+                                <option value="AR">Ariana</option>
+                                <option value="BE">Béja</option>
+                                <option value="BI">Bizerte</option>
+                                <option value="GA">Gabès</option>
+                                <option value="GO">Gafsa</option>
+                                <option value="KR">Kairouan</option>
+                                <option value="KA">Kasserine</option>
+                                <option value="KE">Kebili</option>
+                                <option value="MA">Mahdia</option>
+                                <option value="MN">Manouba</option>
+                                <option value="ME">Medenine</option>
+                                <option value="MO">Monastir</option>
+                                <option value="NB">Nabeul</option>
+                                <option value="SB">Sidi Bouzid</option>
+                                <option value="SI">Siliana</option>
+                                <option value="TA">Tataouine</option>
+                                <option value="TO">Tozeur</option>
+                                <option value="ZA">Zaghouan</option>
+                                <option value="BA">Ben Arous</option>
+                                <option value="KEF">Kef</option>
+                                <option value="JE">Jendouba</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="provider-fields" class="hidden-section">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="serviceCategory">Service Category</label>
+                                <select id="serviceCategory">
+                                    <option value="" disabled selected>Select your trade...</option>
+                                    <option value="plumber">Plumbing</option>
+                                    <option value="electrician">Electrical</option>
+                                    <option value="cleaner">Cleaning</option>
+                                    <option value="painter">Painting</option>
+                                    <option value="carpenter">Carpentry</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="experience">Years of Experience</label>
+                                <input type="number" id="experience" placeholder="e.g. 5" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="address">Full Address</label>
+                        <input type="text" id="address" placeholder="e.g. Route El Ain, Sfax" required>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn-large">Create Account</button>
+                </form>
+                <br>
+                <p class="signup-link">Already have an account? <a href="#" class="login-trigger">Log In</a></p>
+            </div>
+        </div>
+
+        <div class="signup-visual-side">
+            <div class="visual-content">
+                <div class="visual-img-container">
+                    {# FIXED 3: Converted standard HTML image path to Symfony asset path #}
+                    <img src="{{ asset('img/home_page.jpg') }}" alt="Join Service TN">
+                </div>
+                <h3>Fast, Insured, Expert Everyday Repairs.</h3>
+                <p>Join thousands of Tunisians already using Service TN to get things done securely and professionally.</p>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/Signup.js') }}"></script>
+{% endblock %}
