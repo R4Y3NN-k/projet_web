@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Provider Dashboard - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="hub-wrapper">
+        <aside class="hub-sidebar">
+            <nav class="hub-menu">
+                <a href="{{ path('app_provider_dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_provider_jobs') }}"><i class="fas fa-search"></i> Find Work</a>
+                <a href="{{ path('app_provider_settings') }}"><i class="fas fa-user-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="hub-main">
+            <div class="hub-header">
+                <h2>Provider Console 🛠️</h2>
+                <a href="{{ path('app_provider_jobs') }}" class="btn btn-primary">Browse Available Jobs</a>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <p>Total Earned</p>
+                        <h3>1,200 TND</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+                    <div class="stat-info">
+                        <p>Jobs Completed</p>
+                        <h3>12</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="requests-section">
+                <h3 style="margin-bottom: 15px;">Your Current Gigs</h3>
+                <div class="request-item">
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Bathroom Tiles Repair</h4>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">Client: Sarah B. • Due: Tomorrow</span>
+                    </div>
+                    <button class="btn btn-outline" style="font-size: 0.8rem;">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

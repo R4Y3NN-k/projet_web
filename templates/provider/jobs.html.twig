@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find Work - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="hub-wrapper">
+        <aside class="hub-sidebar">
+            <nav class="hub-menu">
+                <a href="{{ path('app_provider_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_provider_jobs') }}" class="active"><i class="fas fa-search"></i> Find Work</a>
+                <a href="{{ path('app_provider_settings') }}"><i class="fas fa-user-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="hub-main">
+            <div class="hub-header">
+                <h2>Available Jobs in Tunisia 🇹🇳</h2>
+            </div>
+
+            <div class="filter-bar">
+                <input type="text" placeholder="Search for 'Plumbing', 'Painting'...">
+                <select>
+                    <option>All Regions</option>
+                    <option>Tunis</option>
+                    <option>Sousse</option>
+                    <option>Sfax</option>
+                </select>
+                <button class="btn btn-primary">Filter</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="requests-section" style="border-left: 5px solid var(--primary);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="color: var(--primary); margin-bottom: 10px;">Garden Maintenance Required</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 15px;">Need someone to trim the hedges and mow a medium-sized lawn in La Marsa.</p>
+                            <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-main);">
+                                <span><i class="fas fa-map-marker-alt"></i> Tunis</span>
+                                <span><i class="fas fa-tag"></i> Gardening</span>
+                                <span><i class="fas fa-user"></i> Posted by: Rayen</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3 style="color: var(--text-main); margin-bottom: 10px;">60 TND</h3>
+                            <button class="btn btn-primary">Apply Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="requests-section" style="border-left: 5px solid var(--primary);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="color: var(--primary); margin-bottom: 10px;">Electrical Socket Replacement</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 15px;">Two sockets in the kitchen are sparked. Need a licensed electrician to replace them.</p>
+                            <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-main);">
+                                <span><i class="fas fa-map-marker-alt"></i> Ariana</span>
+                                <span><i class="fas fa-tag"></i> Electrical</span>
+                                <span><i class="fas fa-user"></i> Posted by: Ameni</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3 style="color: var(--text-main); margin-bottom: 10px;">45 TND</h3>
+                            <button class="btn btn-primary">Apply Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

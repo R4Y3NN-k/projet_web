@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Browse Pros - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="hub-wrapper">
+        
+        <aside class="hub-sidebar">
+            <nav class="hub-menu">
+                <a href="{{ path('app_client_dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="{{ path('app_client_professionals') }}" class="active"><i class="fas fa-users"></i> Browse Pros</a>
+                <a href="{{ path('app_client_settings') }}"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="hub-main">
+            <div class="hub-header">
+                <h2>Find a Professional 🔍</h2>
+            </div>
+
+            <div class="filter-bar">
+                <input type="text" placeholder="Search by name or keyword...">
+                <select>
+                    <option value="">All Categories</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="electrical">Electrical</option>
+                </select>
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <div class="pro-grid">
+                <div class="pro-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200" alt="Ahmed M." class="pro-avatar">
+                    <h3 style="margin-bottom: 5px;">Ahmed M.</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">Master Plumber</p>
+                    <div style="color: #f1c40f; margin-bottom: 15px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span style="color: var(--text-main); font-size: 0.85rem;">(42)</span>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="alert('Phone: +216 55 123 456')">Contact</button>
+                </div>
+
+                <div class="pro-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200" alt="Sarah B." class="pro-avatar">
+                    <h3 style="margin-bottom: 5px;">Sarah B.</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">Deep Cleaning Expert</p>
+                    <div style="color: #f1c40f; margin-bottom: 15px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span style="color: var(--text-main); font-size: 0.85rem;">(115)</span>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="alert('Phone: +216 22 987 654')">Contact</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -16,26 +16,56 @@
 </head>
 <body>
 
-    <header class="header">
-        <nav>
-            <h1>SERVICE TN</h1>
-            <a href="{{ path('app_page') }}">Home</a>
-            <a href="{{ path('app_explore_service') }}">Explore Services</a>
-            <a href="{{ path('app_how_it_works') }}">How it works</a>
-            <div class="nav-right">
-                {# Notice I added the 'login-trigger' class here just in case! #}
-                <button class="btn btn-outline login login-trigger" id="login-btn">Login</button>
-               <a href="{{ path('app_sign_up') }}"> <button class="btn btn-primary signUp">Sign Up</button></a>
-            </div>
-        </nav>
-    </header>
+{% block header %}
+    {% if app.user %}
+        {# ========================================== #}
+        {# LOGGED IN HEADER (Dashboard Style)         #}
+        {# ========================================== #}
+        <header class="header dashboard-top-nav">
+            <nav>
+                <h1>SERVICE TN</h1>
+                
+                <div class="nav-center">
+                    <a href="{{ path('app_explore_service') }}">Explore Services</a>
+                    <a href="{{ path('app_dashboard') }}">My Dashboard</a>
+                </div>
+
+                <div class="nav-right">
+                    <button class="icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline" style="border-color: #ff4d4f; color: #ff4d4f;">Log Out</a>
+                </div>
+            </nav>
+        </header>
+
+    {% else %}
+        {# ========================================== #}
+        {# GUEST HEADER (Public Style)                #}
+        {# ========================================== #}
+        <header class="header">
+            <nav>
+                <h1>SERVICE TN</h1>
+                <a href="{{ path('app_page') }}">Home</a>
+                <a href="{{ path('app_explore_service') }}">Explore Services</a>
+                <a href="{{ path('app_how_it_works') }}">How it works</a>
+                <div class="nav-right">
+                    {# Notice I added the 'login-trigger' class here just in case! #}
+                    <button class="btn btn-outline login login-trigger" id="login-btn">Login</button>
+                    <a href="{{ path('app_sign_up') }}"> <button class="btn btn-primary signUp">Sign Up</button></a>
+                </div>
+            </nav>
+        </header>
+    {% endif %}
+{% endblock %}
 
     <main>
         {% block body %}{% endblock %}
     </main>
 
-
-<footer class="footer">
+    <footer class="footer">
         <div class="footer-container">
             <div class="footer-about">
                 <h2 class="logo">Service TN</h2>
@@ -73,7 +103,7 @@
                     <li><a href="#">Painting</a></li>
                     <li><a href="#">Cleaning</a></li>
                     <li><a href="#">Carpentry</a></li>
-                    <li><a href="#">plumbery</a></li>
+                    <li><a href="#">Plumbing</a></li>
                 </ul>
             </div>
         </div>
@@ -88,17 +118,20 @@
         </div>
     </footer>
 
-    <div id="login-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Welcome Back</h2>
-            <form>
-                <input type="email" placeholder="Email address" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="submit-btn">Log In</button>
-            </form>
-            <p class="signup-link">Don't have an account? <a href="{{ path('app_sign_up') }}">Sign Up</a></p>
+    {# Only render the login modal if the user is NOT logged in #}
+    {% if not app.user %}
+        <div id="login-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2>Welcome Back</h2>
+                <form>
+                    <input type="email" placeholder="Email address" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit" class="submit-btn">Log In</button>
+                </form>
+                <p class="signup-link">Don't have an account? <a href="{{ path('app_sign_up') }}">Sign Up</a></p>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     {% block javascripts %}
         <script src="{{ asset('js/loginLogique.js') }}"></script>

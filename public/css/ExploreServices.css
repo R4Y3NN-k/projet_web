@@ -175,3 +175,32 @@
     .explore-search-bar button { padding: 16px; }
     .services-section { margin-top: 0; padding-top: 40px; }
 }
+
+/* Container for the image */
+.service-image-container {
+    width: 100%;
+    height: 180px; /* Adjust height to your liking */
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+/* Make the image cover the container properly */
+.service-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This prevents the image from looking "stretched" */
+    transition: transform 0.5s ease;
+}
+
+/* Zoom effect on hover */
+.service-card:hover .service-image-container img {
+    transform: scale(1.1);
+}
+
+/* Adjust the card padding since we now have a large image at the top */
+.service-card {
+    padding: 20px; /* Reduced from 40px */
+    align-items: flex-start; /* Align text to the left for a modern look */
+    text-align: left;
+}
