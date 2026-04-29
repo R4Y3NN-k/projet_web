@@ -26,6 +26,10 @@
     font-weight: 800;
     color: var(--text-main);
     margin-bottom: 5px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .form-wrapper .subtitle {
@@ -42,6 +46,17 @@
 .signup-toggle .toggle-btn {
     flex: 1; 
     text-align: center;
+    transition: var(--transition);
+}
+
+.signup-toggle .toggle-btn:hover {
+    background-color: var(--primary-light);
+}
+
+.signup-toggle .toggle-btn.active {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .form-grid {
@@ -65,12 +80,12 @@
 
 .input-group input,
 .input-group select {
-    padding: 14px 15px;
-    border: 1px solid #e1e5eb;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border: 2px solid #e1e5eb;
+    border-radius: 10px;
     font-family: inherit;
     font-size: 0.95rem;
-    background-color: var(--gray-bg);
+    background-color: #f9f9f9;
     transition: var(--transition);
 }
 
@@ -80,26 +95,27 @@
     border-color: var(--primary);
     background-color: var(--white);
     box-shadow: 0 0 0 4px var(--primary-light);
+    transform: translateY(-2px);
 }
 
 .submit-btn-large {
     width: 100%;
     padding: 16px;
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: var(--white);
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
     transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .submit-btn-large:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
 }
 
 .login-redirect {
@@ -137,8 +153,9 @@
     background: var(--white);
     padding: 20px;
     border-radius: 20px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 40px rgba(52, 152, 219, 0.15);
     margin-bottom: 30px;
+    transition: var(--transition);
 }
 
 .visual-img-container img {

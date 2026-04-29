@@ -1,8 +1,27 @@
 /* --- 4. HERO SEARCH SECTION --- */
 main section:first-of-type {
-  background-color: var(--gray-bg);
-  padding: 100px 5%;
+  background: linear-gradient(135deg, var(--gray-bg) 0%, #e8f4f8 100%);
+  padding: 120px 5%;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+main section:first-of-type::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: rgba(52, 152, 219, 0.05);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(30px); }
 }
 
 main section:first-of-type h1 {
@@ -10,6 +29,22 @@ main section:first-of-type h1 {
   font-weight: 800;
   margin-bottom: 10px;
   letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 main section:first-of-type h3 {
@@ -17,6 +52,7 @@ main section:first-of-type h3 {
   font-size: 1.2rem;
   margin-bottom: 40px;
   font-weight: 400;
+  animation: slideDown 0.8s ease-out 0.2s both;
 }
 
 main section:first-of-type div {
@@ -24,35 +60,49 @@ main section:first-of-type div {
   justify-content: center;
   gap: 12px;
   background: white;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(52, 152, 219, 0.1);
   display: inline-flex;
+  animation: slideDown 0.8s ease-out 0.4s both;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 main section:first-of-type input,
 main section:first-of-type select {
   padding: 15px 20px;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border: 2px solid #eee;
+  border-radius: 10px;
   font-size: 1rem;
   outline: none;
   min-width: 200px;
+  transition: var(--transition);
+  background-color: #f9f9f9;
+}
+
+main section:first-of-type input:focus,
+main section:first-of-type select:focus {
+  border-color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 0 4px var(--primary-light);
 }
 
 main section:first-of-type button {
-  background: var(--primary); 
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: var(--white);
-  padding: 0 35px;
+  padding: 15px 35px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 main section:first-of-type button:hover {
-  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
 }
 
 /* --- 5. SLIDING CATEGORIES BAR --- */
@@ -64,8 +114,9 @@ main section:nth-of-type(2) {
 main section:nth-of-type(2) h1 {
     text-align: left;
     margin-bottom: 30px;
-    font-size: 1.8rem;
+    font-size: 2rem;
     position: relative;
+    font-weight: 800;
 }
 
 main section:nth-of-type(2) h1::after {
@@ -73,14 +124,15 @@ main section:nth-of-type(2) h1::after {
     position: absolute;
     bottom: -8px;
     left: 0;
-    width: 50px;
-    height: 4px;
-    background: var(--primary); 
+    width: 60px;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 3px;
 }
 
 .categories {
   display: flex;
-  gap: 25px;
+  gap: 30px;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 20px 20px 40px 0;
@@ -96,35 +148,60 @@ main section:nth-of-type(2) h1::after {
 .categories:hover::-webkit-scrollbar-thumb { background: var(--primary); }
 
 .category {
-  flex: 0 0 160px;
+  flex: none;
   background: var(--white);
-  padding: 25px 15px;
-  border-radius: 20px;
+  padding: 40px 30px;
+  border-radius: var(--radius-xl);
   text-align: center;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-  transition: var(--transition);
+  display: flex;
+  border: 2px solid var(--gray-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: var(--transition-slow);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-light);
+  transition: var(--transition);
+  z-index: -1;
+}
+
+.category:hover::before {
+  left: 0;
 }
 
 .category:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
   border-color: var(--primary);
-  background: var(--primary-light); 
 }
 
 .category img {
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  border: 3px solid var(--primary-light);
+  transition: var(--transition);
+}
+
+.category:hover img {
+  border-color: var(--primary);
+  transform: scale(1.05);
 }
 
 .category p {
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 1.15rem;
   color: var(--text-main);
 }
 
@@ -137,22 +214,48 @@ main section:nth-of-type(3) {
 
 .providers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 30px;
   margin-top: 50px;
 }
 
 .provider {
   background: var(--white);
-  padding: 35px 25px;
-  border-radius: 24px;
+  padding: 40px 30px;
+  border-radius: var(--radius-xl);
+  transition: var(--transition-slow);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.provider::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: var(--primary-light);
+  border-radius: 50%;
   transition: var(--transition);
-  border: 1px solid transparent;
+  z-index: 0;
+}
+
+.provider:hover::after {
+  bottom: -10%;
+  right: -10%;
+}
+
+.provider > * {
+  position: relative;
+  z-index: 1;
 }
 
 .provider:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
   border-color: var(--primary);
 }
 
@@ -162,21 +265,27 @@ main section:nth-of-type(3) {
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 20px;
-  border: 4px solid var(--primary-light); 
+  border: 4px solid var(--primary-light);
+  transition: var(--transition);
+}
+
+.provider:hover img {
+  border-color: var(--primary);
+  transform: scale(1.08);
 }
 
 .provider p {
   font-weight: 800;
-  font-size: 1.1rem;
-  margin-bottom: 5px;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
 }
 
 .provider span {
-  color: var(--primary); 
+  color: var(--primary);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 /* --- 8. RESPONSIVE FIXES --- */
