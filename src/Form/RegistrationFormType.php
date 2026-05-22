@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -25,7 +26,7 @@ class RegistrationFormType extends AbstractType
             ->add('dateOfBirth', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('fullAddress', TextType::class)
+            ->add('FullAdress', TextType::class)
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false, // I will handel the hashing myself in the contoller (Rayen)
             ])
@@ -43,9 +44,9 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('userType', TextType::class, [
+            ->add('userType', HiddenType::class, [
                 'mapped' => false,
-                'data' => 'client', 
+                'data' => 'client',
             ]);
     }
 
