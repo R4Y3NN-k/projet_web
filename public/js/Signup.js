@@ -38,7 +38,7 @@ clientBtn.addEventListener("click", () => {
 
 // Changed the password validation to make a better UI experience for users (Rayen)
 const form = document.getElementById("advanced-signup-form");
-const passwordInput = document.getElementById("password");
+const passwordInput = document.getElementById("registration_form_plainPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 
 
