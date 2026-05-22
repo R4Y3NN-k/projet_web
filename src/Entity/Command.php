@@ -33,6 +33,9 @@ class Command
     #[ORM\ManyToOne(inversedBy: 'commands')]
     private ?Provider $provider = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +109,18 @@ class Command
     public function setProvider(?Provider $provider): static
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

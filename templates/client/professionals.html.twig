@@ -34,27 +34,31 @@
             </div>
 
             <div class="pro-grid">
-                <div class="pro-card">
-                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200" alt="Ahmed M." class="pro-avatar">
-                    <h3 style="margin-bottom: 5px;">Ahmed M.</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">Master Plumber</p>
-                    <div style="color: #f1c40f; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        <span style="color: var(--text-main); font-size: 0.85rem;">(42)</span>
+                {% for profile in providers %}
+                    {# Access the underlying base user account through relationship maps #}
+                    {% set proUser = profile.user %}
+                    <div class="pro-card">
+                        <img src="https://ui-avatars.com/api/?name={{ proUser.firstName }}+{{ proUser.lastName }}&background=2563eb&color=fff" alt="{{ proUser.firstName }}" class="pro-avatar">
+                        <h3 style="margin-bottom: 5px;">{{ proUser.firstName }} {{ proUser.lastName|slice(0, 1) }}.</h3>
+                        
+                        {# Pulls directly from your provider profile table fields #}
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">
+                            {{ profile.serviceCategory|default('Service Provider') }}
+                        </p>
+                        
+                        <div style="color: #f1c40f; margin-bottom: 15px;">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span style="color: var(--text-main); font-size: 0.85rem;">({{ profile.yearsOfExperience|default('0') }} yrs exp)</span>
+                        </div>
+                        
+                        <button class="btn btn-outline" style="width: 100%;" onclick="alert('Provider Region: {{ proUser.location }}')">Contact Pro</button>
                     </div>
-                    <button class="btn btn-outline" style="width: 100%;" onclick="alert('Phone: +216 55 123 456')">Contact</button>
-                </div>
-
-                <div class="pro-card">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200" alt="Sarah B." class="pro-avatar">
-                    <h3 style="margin-bottom: 5px;">Sarah B.</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">Deep Cleaning Expert</p>
-                    <div style="color: #f1c40f; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        <span style="color: var(--text-main); font-size: 0.85rem;">(115)</span>
+                {% else %}
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i class="fas fa-user-slash" style="font-size: 2.5rem; display:block; margin-bottom:15px; color:#cbd5e1;"></i>
+                        No professionals are currently registered.
                     </div>
-                    <button class="btn btn-outline" style="width: 100%;" onclick="alert('Phone: +216 22 987 654')">Contact</button>
-                </div>
+                {% endfor %}
             </div>
 
         </div>

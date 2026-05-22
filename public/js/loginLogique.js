@@ -33,16 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. FORM SUBMISSION: Handle the login attempt
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            const email = loginForm.querySelector('input[type="email"]').value;
-            console.log(`Attempting login for: ${email}`);
-            alert('Frontend logic is working! Symfony backend connection coming soon.');
+    // // 4. FORM SUBMISSION: Handle the login attempt
+    // if (loginForm) {
+    //     loginForm.addEventListener('submit', (e) => {
+    //         e.preventDefault(); 
+    //         const email = loginForm.querySelector('input[type="email"]').value;
+    //         console.log(`Attempting login for: ${email}`);
+    //         alert('Frontend logic is working! Symfony backend connection coming soon.');
             
-            loginForm.reset();
-            loginModal.style.display = 'none';
-        });
+    //         loginForm.reset();
+    //         loginModal.style.display = 'none';
+    //     });
+    // }
+    document.addEventListener("DOMContentLoaded", function() {
+    const loginModal = document.getElementById('login-modal');
+    
+    // IF Symfony returns an error alert, force the modal to stay visible 
+    if (document.querySelector('.alert-danger')) {
+        loginModal.style.display = 'flex'; 
     }
+    
+    // ... your remaining click listeners to open/close the modal ...
+});
 });
