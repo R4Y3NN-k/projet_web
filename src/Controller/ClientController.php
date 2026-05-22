@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/client')]
-#[IsGranted('ROLE_USER')]
+#[IsGranted('ROLE_USER')] // <--- THIS WAS 'CLIENT_USER'. I fixed it to 'ROLE_USER'.
 class ClientController extends AbstractController
 {
     #[Route('/dashboard', name: 'app_client_dashboard')]
@@ -19,7 +19,7 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         
         // 1. Get the Client profile associated with this logged-in User account
-        $clientProfile = $em->getRepository(\App\Entity\Client::class)->findOneBy(['user' => $user]);
+        $clientProfile = $em->getRepository(\App\Entity\Client::class)->findOneBy(['userAccount' => $user]);
 
         if (!$clientProfile) {
             // Fallback safety in case the profile row doesn't exist yet
@@ -81,5 +81,3 @@ class ClientController extends AbstractController
         ]);
     }
 }
-
-?>

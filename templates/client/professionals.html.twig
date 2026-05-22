@@ -36,7 +36,7 @@
             <div class="pro-grid">
                 {% for profile in providers %}
                     {# Access the underlying base user account through relationship maps #}
-                    {% set proUser = profile.user %}
+                    {% set proUser = profile.userAccount %}
                     <div class="pro-card">
                         <img src="https://ui-avatars.com/api/?name={{ proUser.firstName }}+{{ proUser.lastName }}&background=2563eb&color=fff" alt="{{ proUser.firstName }}" class="pro-avatar">
                         <h3 style="margin-bottom: 5px;">{{ proUser.firstName }} {{ proUser.lastName|slice(0, 1) }}.</h3>
@@ -63,4 +63,7 @@
 
         </div>
     </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/jobPosting.js') }}"></script>
+    {% endblock %}
 {% endblock %}
