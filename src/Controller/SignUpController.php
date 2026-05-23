@@ -30,7 +30,7 @@ final class SignUpController extends AbstractController
             $confirmPassword = $request->request->get('confirmPassword');
 
             if ($plainPassword !== $confirmPassword) {
-                $this->addFlash('error', 'Passwords do not match.');
+                $this->addFlash('signupError', 'Passwords do not match.');
                 return $this->render('signUp/index.html.twig', [
                     'form' => $form->createView(),
                 ]);

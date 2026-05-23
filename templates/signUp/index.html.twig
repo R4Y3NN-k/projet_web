@@ -110,4 +110,15 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/Signup.js') }}"></script>
+    <script>
+        function killModal() {
+            const modal = document.getElementById('login-modal');
+            if (modal) {
+                modal.classList.remove('show-modal');
+                modal.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', killModal);
+        document.addEventListener('turbo:load', killModal);
+    </script>
 {% endblock %}

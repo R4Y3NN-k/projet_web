@@ -121,7 +121,7 @@
 {# Only render the login modal if the user is NOT logged in #}
 {% if not app.user %}
     
-    <div id="login-modal" class="modal-overlay {% if error is defined and error %}show-modal{% endif %}">
+    <div id="login-modal" class="modal-overlay {% if error is defined and error and app.request.attributes.get('_route') != 'app_sign_up' %}show-modal{% endif %}">
         <div class="modal-content">
             <h2>Welcome Back</h2>
 
