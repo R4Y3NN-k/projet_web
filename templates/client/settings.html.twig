@@ -4,33 +4,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
-    <style>
-        .settings-nav {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e1e5eb;
-        }
-        .nav-tab {
-            padding: 10px 5px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 700;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-        }
-        .nav-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-        .danger-zone {
-            margin-top: 50px;
-            padding: 20px;
-            border: 1px solid #ffccc7;
-            background-color: #fff1f0;
-            border-radius: 12px;
-        }
-    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -50,83 +24,51 @@
 
             <div class="settings-nav">
                 <div class="nav-tab active">Profile Info</div>
-                <div class="nav-tab">Security</div>
-                <div class="nav-tab">Preferences</div>
             </div>
 
             <div class="settings-card">
                 <form>
                     <h3 style="margin-bottom: 20px;"><i class="fas fa-user-circle"></i> Personal Information</h3>
                     
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 20px; background: var(--gray-bg); border-radius: 10px;">
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=2563eb&color=fff" style="width: 70px; border-radius: 50%;">
+                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 20px; background: #f8fafc; border-radius: 10px;">
+                        <img src="https://ui-avatars.com/api/?name={{ user.firstName }}+{{ user.lastName }}&background=2563eb&color=fff" style="width: 70px; border-radius: 50%;">
                         <div>
-                            <button type="button" class="btn btn-outline" style="padding: 8px 15px; font-size: 0.8rem;">Change Photo</button>
-                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">JPG or PNG, max 2MB.</p>
+                            <p style="font-weight: bold; margin: 0; color: #1e293b;">{{ user.firstName }} {{ user.lastName }}</p>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Account Profile Context: Client Hub</p>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 20px;">
                         <div class="form-group" style="flex: 1;">
-                            <label>Full Name</label>
-                            <input type="text" class="form-control" value="John Doe">
+                            <label style="display:block; margin-bottom:5px; font-weight:600; color:#334155;">First Name</label>
+                            <input type="text" class="form-control" value="{{ user.firstName }}" readonly>
                         </div>
                         <div class="form-group" style="flex: 1;">
-                            <label>Display Name</label>
-                            <input type="text" class="form-control" value="JohnD_216">
+                            <label style="display:block; margin-bottom:5px; font-weight:600; color:#334155;">Last Name</label>
+                            <input type="text" class="form-control" value="{{ user.lastName }}" readonly>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" class="form-control" value="john.doe@gmail.com">
-                        <small style="color: var(--text-muted);">We will send a verification link if you change this.</small>
+                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#334155;">Email Address</label>
+                        <input type="email" class="form-control" value="{{ user.email }}" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Phone Number (WhatsApp preferred)</label>
-                        <input type="text" class="form-control" value="+216 22 123 456">
+                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#334155;">Region Base</label>
+                        <input type="text" class="form-control" value="{{ user.location }}" readonly>
                     </div>
-
-                    <div class="form-group">
-                        <label>City / Region</label>
-                        <select class="form-control">
-                            <option>Tunis</option>
-                            <option>Ariana</option>
-                            <option>Sousse</option>
-                            <option>Sfax</option>
-                        </select>
-                    </div>
-
-                    <hr style="border: 0; border-top: 1px solid #e1e5eb; margin: 40px 0;">
-
-                    <h3 style="margin-bottom: 20px;"><i class="fas fa-shield-alt"></i> Password & Security</h3>
-                    
-                    <div class="form-group">
-                        <label>Current Password</label>
-                        <input type="password" class="form-control" placeholder="••••••••">
-                    </div>
-
-                    <div style="display: flex; gap: 20px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label>New Password</label>
-                            <input type="password" class="form-control">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Confirm New Password</label>
-                            <input type="password" class="form-control">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Update All Settings</button>
                 </form>
 
                 <div class="danger-zone">
-                    <h4 style="color: #cf1322; margin-bottom: 10px;">Delete Account</h4>
-                    <p style="font-size: 0.9rem; color: #434343; margin-bottom: 15px;">Once you delete your account, there is no going back. Please be certain.</p>
-                    <button class="btn btn-outline" style="border-color: #ff4d4f; color: #ff4d4f;">Deactivate Account</button>
+                    <h4 style="color: #cf1322; margin-bottom: 10px;">Session Management</h4>
+                    <p style="font-size: 0.9rem; color: #434343; margin-bottom: 15px;">Securely close your active browsing session right here.</p>
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline" style="border-color: #ff4d4f; color: #ff4d4f; text-decoration: none; display: inline-block; padding: 8px 15px; border-radius: 6px; font-weight: bold;">Log Out</a>
                 </div>
             </div>
         </div>
     </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/jobPosting.js') }}"></script>
+    {% endblock %}
 {% endblock %}

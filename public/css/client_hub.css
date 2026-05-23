@@ -249,3 +249,19 @@ hr {
     align-items: center;
     gap: 10px;
 }
+
+
+.badge {
+    padding: 5px 10px; 
+    border-radius: 20px; 
+    font-size: 0.85rem; 
+    font-weight: bold;
+}
+.status-awaiting {
+    background: #fff3cd; 
+    color: #856404;
+}
+.status-progress {
+    background: #d4edda; 
+    color: #155724;
+}

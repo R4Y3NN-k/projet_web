@@ -1,48 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Grab the modal and form
     const loginModal = document.getElementById('login-modal');
-    const loginForm = loginModal ? loginModal.querySelector('form') : null;
-    
-    // Grab ALL buttons or links that should open the modal
-    // We are selecting the old ID just in case, plus the new class!
     const loginTriggers = document.querySelectorAll('#login-btn, .login-trigger');
 
-    // 1. OPEN MODAL: Loop through all triggers and add the click event
-    if (loginModal) {
-        loginTriggers.forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault(); // Stop links from jumping to top of page
-                loginModal.style.display = 'flex'; 
-                loginModal.style.opacity = '1';
-                loginModal.style.visibility = 'visible';
-            });
-        });
+    // Safety check: if the modal isn't on the page, don't run the rest of the script
+    if (!loginModal) return;
 
-        // 2. CLOSE MODAL: Click outside the modal content
-        loginModal.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-        });
+    // ==========================================
+    // 1. FORCE OPEN ON ERROR (Symfony feedback)
+    // ==========================================
+    // If Symfony printed the error box, immediately show the modal
+    if (document.querySelector('.alert-danger')) {
+        loginModal.style.display = 'flex';
+        loginModal.style.opacity = '1';
+        loginModal.style.visibility = 'visible';
     }
 
-    // 3. CLOSE MODAL: Pressing the Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && loginModal && loginModal.style.display !== 'none') {
+    // ==========================================
+    // 2. OPEN MODAL (Clicking the Nav Button)
+    // ==========================================
+    loginTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            loginModal.style.display = 'flex'; 
+            loginModal.style.opacity = '1';
+            loginModal.style.visibility = 'visible';
+        });
+    });
+
+    // ==========================================
+    // 3. CLOSE MODAL (Clicking outside)
+    // ==========================================
+    loginModal.addEventListener('click', (e) => {
+        if (e.target === loginModal) {
             loginModal.style.display = 'none';
         }
     });
 
-    // 4. FORM SUBMISSION: Handle the login attempt
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            const email = loginForm.querySelector('input[type="email"]').value;
-            console.log(`Attempting login for: ${email}`);
-            alert('Frontend logic is working! Symfony backend connection coming soon.');
-            
-            loginForm.reset();
+    // ==========================================
+    // 4. CLOSE MODAL (Pressing Escape)
+    // ==========================================
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && loginModal.style.display !== 'none') {
             loginModal.style.display = 'none';
-        });
-    }
+        }
+    });
 });

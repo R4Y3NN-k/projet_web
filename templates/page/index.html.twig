@@ -49,26 +49,11 @@
         <h1>Popular Categories</h1>
         <div class="categories-wrapper"></div>
             <div class="categories">
-                <div class="category">
-                    <img src="{{ asset('img/plumber.jpg') }}" alt="Category 1">
-                    <p>Plumbing</p>
-                </div>
-                <div class="category">
-                    <img src="{{ asset('img/electrician.jpg') }}" alt="Category 2">
-                    <p>Electrical</p>
-                </div>
-                <div class="category">
-                    <img src="{{ asset('img/cleaner.png') }}" alt="Category 3">
-                    <p>Cleaning</p>
-                </div>
-                <div class="category">
-                    <img src="{{ asset('img/painter.jpg') }}" alt="Category 4">
-                    <p>Painting</p>
-                </div>
-                <div class="category">
-                    <img src="{{ asset('img/carpnter.jpg') }}" alt="Category 5">
-                    <p>Carpentry</p>
-                </div>
+                {% for category in categories %}
+                    <div class="category">
+                        <p>{{ category.name }}</p>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -76,38 +61,14 @@
     <section>
         <h1>Top Providers</h1>
         <div class="providers">
-            <div class="provider">
-                <img src="{{ asset('img/moudir.jpeg') }}" alt="Provider 1">
-                <p>ELMOUDIR</p>
-                <span>Plumber</span>
-            </div>
-            <div class="provider">
-                <img src="{{ asset('img/yahya.jpeg') }}" alt="Provider 2">
-                <p>Dahouathi</p>
-                <span>Electrician</span>
-            </div>
-            <div class="provider">
-                <img src="{{ asset('img/charadi.jpeg') }}" alt="Provider 3">
-                <p>Charadi</p>
-                <span>Cleaner</span>
-            </div>
-            <div class="provider">
-                <img src="{{ asset('img/khedher.jpeg') }}" alt="Provider 4">
-                <p>khedher</p>
-                <span>Painter</span>
-            </div>
+            {% for provider in providers %}
+                <div class="provider">
+                    <p>{{ provider.userAccount.firstName }} {{ provider.userAccount.lastName }}</p>
+                    <span>{{ provider.category.name }} ({{ provider.yearsOfExperience }} years)</span>
+                </div>
+            {% endfor %}
         </div>
     </section>
 
-    <div id="login-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Welcome Back</h2>
-            <form>
-                <input type="email" placeholder="Email address" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="submit-btn">Log In</button>
-            </form>
-            <p class="signup-link">Don't have an account? <a href="{{ path('app_sign_up') }}">Sign Up</a></p>
-        </div>
-    </div>
+
 {% endblock %}
