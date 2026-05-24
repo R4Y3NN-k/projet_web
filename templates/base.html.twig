@@ -121,7 +121,7 @@
 {# Only render the login modal if the user is NOT logged in #}
 {% if not app.user %}
     
-    <div id="login-modal" class="modal-overlay {% if error is defined and error %}show-modal{% endif %}">
+    <div id="login-modal" class="modal-overlay {% if error is defined and error and app.request.attributes.get('_route') != 'app_sign_up' %}show-modal{% endif %}">
         <div class="modal-content">
             <h2>Welcome Back</h2>
 
@@ -132,11 +132,10 @@
                 </div>
             {% endif %}
             
-            <form action="{{ path('app_login') }}" method="post">
-                
+            <form id="ajax-login-form" action="{{ path('app_login') }}" method="post">
                 <input type="email" id="username" name="_username" placeholder="Email address" value="{{ last_username|default('') }}" required autocomplete="email" autofocus>
                 <input type="password" id="password" name="_password" placeholder="Password" required autocomplete="current-password">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_csrf_token" id="csrf-token" value="{{ csrf_token('authenticate') }}">
 
                 <button type="submit" class="submit-btn">Log In</button>
             </form>
@@ -147,6 +146,7 @@
 
     {% block javascripts %}
         <script src="{{ asset('js/loginLogique.js') }}"></script>
+        <script src="{{ asset('js/redirection.js') }}"></script>
     {% endblock %}
 </body>
 </html>

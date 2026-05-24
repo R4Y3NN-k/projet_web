@@ -1,83 +1,100 @@
 <?php
+
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\Client;
+use App\Entity\Command;
+use App\Entity\Category;
+use App\Entity\Provider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/client')]
-#[IsGranted('ROLE_USER')] // <--- THIS WAS 'CLIENT_USER'. I fixed it to 'ROLE_USER'.
 class ClientController extends AbstractController
 {
-    #[Route('/dashboard', name: 'app_client_dashboard')]
-    public function dashboard(EntityManagerInterface $em): Response
+    #[Route('/client/dashboard', name: 'app_client_dashboard')]
+    public function dashboard(Request $request, EntityManagerInterface $em): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
-        
-        // 1. Get the Client profile associated with this logged-in User account
-        $clientProfile = $em->getRepository(\App\Entity\Client::class)->findOneBy(['userAccount' => $user]);
+        if (!$user) return $this->redirectToRoute('app_login');
 
-        if (!$clientProfile) {
-            // Fallback safety in case the profile row doesn't exist yet
-            return $this->render('client/dashboard.html.twig', [
-                'user' => $user,
-                'jobs_count' => 0,
-                'total_spent' => 0,
-                'requests' => []
-            ]);
+        $clientProfile = $em->getRepository(Client::class)->findOneBy(['userAccount' => $user]);
+
+        // Catch the Job Modal Submission
+        if ($request->isMethod('POST')) {
+            $title = $request->request->get('title');
+            $description = $request->request->get('description');
+            $price = $request->request->get('price'); // Added price capture!
+            $categoryId = $request->request->get('category');
+
+            if ($title && $description && $price && $categoryId) {
+                $categoryEntity = $em->getRepository(Category::class)->find($categoryId);
+
+                if ($categoryEntity) {
+                    $command = new Command();
+                    $command->setTitle($title);
+                    $command->setDescription($description);
+                    $command->setPrice($price);
+                    $command->setStatus('Open');
+                    $command->setCreatedAt(new \DateTimeImmutable());
+                    $command->setClient($clientProfile);
+                    $command->setCategory($categoryEntity);
+
+                    $em->persist($command);
+                    $em->flush();
+
+                    return $this->redirectToRoute('app_client_dashboard');
+                }
+            }
         }
 
-        // 2. Count total commands posted by this client profile
-        $jobsCount = $em->createQuery(
-            'SELECT COUNT(c.id) FROM App\Entity\Command c WHERE c.client = :client'
-        )->setParameter('client', $clientProfile)->getSingleScalarResult();
+        // Fetch data for the Twig view
+        $requests = $em->getRepository(Command::class)->findBy(
+            ['client' => $clientProfile],
+            ['createdAt' => 'DESC']
+        );
+        $categories = $em->getRepository(Category::class)->findAll();
 
-        // 3. Calculate total money spent on Completed commands
-        $totalSpent = $em->createQuery(
-            'SELECT SUM(c.price) FROM App\Entity\Command c WHERE c.client = :client AND c.status = :status'
-        )->setParameters([
-            'client' => $clientProfile,
-            'status' => 'Completed'
-        ])->getSingleScalarResult() ?? 0;
-
-        // 4. Fetch ongoing commands (excluding Completed ones) ordered by newest
-        $activeRequests = $em->createQuery(
-            'SELECT c FROM App\Entity\Command c 
-             WHERE c.client = :client AND c.status != :completedStatus 
-             ORDER BY c.createdAt DESC'
-        )->setParameters([
-            'client' => $clientProfile,
-            'completedStatus' => 'Completed'
-        ])->getResult();
+        // Calculate Dashboard Stats
+        $jobsCount = count($requests);
+        $totalSpent = 0;
+        foreach ($requests as $req) {
+            $totalSpent += (float) $req->getPrice(); // Simple sum of all job prices
+        }
 
         return $this->render('client/dashboard.html.twig', [
             'user' => $user,
+            'requests' => $requests,
+            'categories' => $categories,
             'jobs_count' => $jobsCount,
             'total_spent' => $totalSpent,
-            'requests' => $activeRequests
         ]);
     }
 
-    #[Route('/professionals', name: 'app_client_professionals')]
+    #[Route('/client/professionals', name: 'app_client_professionals')]
     public function browsePros(EntityManagerInterface $em): Response
     {
-        // Fetch all provider profiles to display inside the marketplace grid
-        $providers = $em->getRepository(\App\Entity\Provider::class)->findAll();
+        $user = $this->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+
+        // Fetch all providers to display on the Browse Pros page
+        $providers = $em->getRepository(Provider::class)->findAll();
 
         return $this->render('client/professionals.html.twig', [
-            'providers' => $providers
+            'providers' => $providers,
         ]);
     }
 
-    #[Route('/settings', name: 'app_client_settings')]
+    #[Route('/client/settings', name: 'app_client_settings')]
     public function settings(): Response
     {
+        $user = $this->getUser();
+        if (!$user) return $this->redirectToRoute('app_login');
+
         return $this->render('client/settings.html.twig', [
-            'user' => $this->getUser()
+            'user' => $user,
         ]);
     }
 }

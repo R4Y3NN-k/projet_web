@@ -15,7 +15,6 @@ final class PageController extends AbstractController
     {
         $providers = $providerRepo->findAll();
         $categories = $categoryRepo->findAll();
-
         return $this->render('page/index.html.twig', [
             'providers' => $providers,
             'categories' => $categories,

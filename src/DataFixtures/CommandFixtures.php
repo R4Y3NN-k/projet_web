@@ -16,6 +16,7 @@ class CommandFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        return;
         $faker = Factory::create('fr_FR');
         
         // Fetch clients and providers
