@@ -9,16 +9,16 @@ use Doctrine\Persistence\ObjectManager;
 class LocationFixtures extends Fixture
 {
     public const LOCATIONS = [
-        'Paris',
-        'Lyon',
-        'Marseille',
-        'Toulouse',
-        'Nice',
-        'Nantes',
-        'Strasbourg',
-        'Bordeaux',
-        'Lille',
-        'Rennes',
+        'Tunis',
+        'Beja',
+        'Manouba',
+        'kairouan',
+        'sousse',
+        'Monastir',
+        'Ariana',
+        'Sfax',
+        'Gabes',
+        'Gafsa',
     ];
 
     public function load(ObjectManager $manager): void

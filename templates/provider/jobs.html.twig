@@ -4,6 +4,62 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .alert-box {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .alert-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-bar form {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            align-items: center;
+        }
+        .filter-bar input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .filter-bar select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+        .filter-info {
+            padding: 10px;
+            background: #f0f7ff;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -21,54 +77,159 @@
                 <h2>Available Jobs in Tunisia 🇹🇳</h2>
             </div>
 
+            <!-- Flashbag Messages -->
+            {% for message in app.flashes('success') %}
+                <div class="alert-box alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ message }}</span>
+                    <span class="alert-close" onclick="this.parentElement.style.display='none';">✕</span>
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert-box alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ message }}</span>
+                    <span class="alert-close" onclick="this.parentElement.style.display='none';">✕</span>
+                </div>
+            {% endfor %}
+
             <div class="filter-bar">
-                <input type="text" placeholder="Search for 'Plumbing', 'Painting'...">
-                <select>
-                    <option>All Regions</option>
-                    <option>Tunis</option>
-                    <option>Sousse</option>
-                    <option>Sfax</option>
-                </select>
-                <button class="btn btn-primary">Filter</button>
+                <form method="GET" action="{{ path('app_provider_jobs') }}" style="display: flex; gap: 10px; width: 100%;">
+                    <input type="text" name="search" placeholder="Search for 'Plumbing', 'Painting'..." value="{{ searchQuery }}" style="flex: 1;">
+                    <select name="location" style="min-width: 150px;">
+                        <option value="">All Regions</option>
+                        {% for location in locations %}
+                            <option value="{{ location.name }}" {% if location.name == selectedLocation %}selected{% endif %}>{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    {% if searchQuery or selectedLocation %}
+                        <a href="{{ path('app_provider_jobs') }}" class="btn btn-outline">Clear Filters</a>
+                    {% endif %}
+                </form>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                <div class="requests-section" style="border-left: 5px solid var(--primary);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h3 style="color: var(--primary); margin-bottom: 10px;">Garden Maintenance Required</h3>
-                            <p style="color: var(--text-muted); margin-bottom: 15px;">Need someone to trim the hedges and mow a medium-sized lawn in La Marsa.</p>
-                            <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-main);">
-                                <span><i class="fas fa-map-marker-alt"></i> Tunis</span>
-                                <span><i class="fas fa-tag"></i> Gardening</span>
-                                <span><i class="fas fa-user"></i> Posted by: Rayen</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <h3 style="color: var(--text-main); margin-bottom: 10px;">60 TND</h3>
-                            <button class="btn btn-primary">Apply Now</button>
-                        </div>
+                {% if searchQuery or selectedLocation %}
+                    <div class="filter-info">
+                        <strong>Filters applied:</strong>
+                        {% if searchQuery %}<span>Search: "{{ searchQuery }}"</span>{% endif %}
+                        {% if selectedLocation %}<span>Location: {{ selectedLocation }}</span>{% endif %}
+                        <span style="margin-left: 10px; color: var(--text-muted);">• {{ jobs|length }} result{{ jobs|length != 1 ? 's' : '' }} found</span>
                     </div>
-                </div>
+                {% endif %}
 
-                <div class="requests-section" style="border-left: 5px solid var(--primary);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h3 style="color: var(--primary); margin-bottom: 10px;">Electrical Socket Replacement</h3>
-                            <p style="color: var(--text-muted); margin-bottom: 15px;">Two sockets in the kitchen are sparked. Need a licensed electrician to replace them.</p>
-                            <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-main);">
-                                <span><i class="fas fa-map-marker-alt"></i> Ariana</span>
-                                <span><i class="fas fa-tag"></i> Electrical</span>
-                                <span><i class="fas fa-user"></i> Posted by: Ameni</span>
+                {% if jobs|length > 0 %}
+                    {% for job in jobs %}
+                        <div class="requests-section" style="border-left: 5px solid var(--primary);">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <h3 style="color: var(--primary); margin-bottom: 10px;">{{ job.title }}</h3>
+                                    <p style="color: var(--text-muted); margin-bottom: 15px;">{{ job.description }}</p>
+                                    <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-main);">
+                                        <span><i class="fas fa-tag"></i> {{ job.category.name }}</span>
+                                        <span><i class="fas fa-user"></i> Posted by: {{ job.client.userAccount.firstName }} {{ job.client.userAccount.lastName }}</span>
+                                        <span><i class="fas fa-calendar"></i> {{ job.createdAt.format('d/m/Y') }}</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <h3 style="color: var(--text-main); margin-bottom: 10px;">{{ job.price }} TND</h3>
+                                    <button class="btn btn-primary apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                                </div>
                             </div>
                         </div>
-                        <div style="text-align: right;">
-                            <h3 style="color: var(--text-main); margin-bottom: 10px;">45 TND</h3>
-                            <button class="btn btn-primary">Apply Now</button>
-                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <p>No jobs available at the moment. Check back later!</p>
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
+
+    <!-- Application Modal -->
+    <div id="apply-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Apply for Job</h2>
+                <button id="close-apply-modal" style="background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+            </div>
+            
+            <form id="apply-form" method="POST" action="{{ path('app_provider_apply') }}">
+                <input type="hidden" id="job-id" name="job_id">
+                <input type="hidden" id="provider-id" name="provider_id">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Job Title</label>
+                    <input type="text" id="modal-job-title" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #f5f5f5;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Your Bid Price (TND)</label>
+                    <input type="number" id="bid-price" name="bid_price" step="0.5" min="1" placeholder="Enter your bid price" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Cover Message</label>
+                    <textarea id="cover-message" name="cover_message" rows="4" placeholder="Tell the client why you're the best fit for this job..." required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const applyModal = document.getElementById('apply-modal');
+                const closeBtn = document.getElementById('close-apply-modal');
+                const applyForm = document.getElementById('apply-form');
+                const applyButtons = document.querySelectorAll('.apply-btn');
+                
+                // Get provider ID from the page
+                const providerId = {{ app.user.provider.id | default(0) }};
+
+                if (providerId === 0) {
+                    console.error('Provider not found for current user');
+                }
+
+                // Close modal
+                closeBtn.addEventListener('click', () => {
+                    applyModal.style.display = 'none';
+                });
+
+                // Close modal by clicking outside
+                window.addEventListener('click', (e) => {
+                    if (e.target === applyModal) {
+                        applyModal.style.display = 'none';
+                    }
+                });
+
+                // Open modal on Apply button click
+                applyButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (providerId === 0) {
+                            alert('Error: Provider profile not found');
+                            return;
+                        }
+
+                        const jobId = btn.getAttribute('data-job-id');
+                        const jobTitle = btn.closest('.requests-section').querySelector('h3').textContent;
+
+                        document.getElementById('job-id').value = jobId;
+                        document.getElementById('provider-id').value = providerId;
+                        document.getElementById('modal-job-title').value = jobTitle;
+
+                        applyModal.style.display = 'flex';
+                    });
+                });
+
+                // Form will submit normally to the controller
+                // Flashbags will display on page reload
+            });
+        </script>
+    {% endblock %}
 {% endblock %}
