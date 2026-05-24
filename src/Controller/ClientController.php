@@ -148,13 +148,11 @@ class ClientController extends AbstractController
             ->join('p.userAccount', 'u'); // Join the base User entity to search user properties
 
         if ($searchQuery) {
-            // FIXED: Only search fields that actually exist on the userAccount mapping properties
             $qb->andWhere('u.firstName LIKE :query OR u.lastName LIKE :query')
                ->setParameter('query', '%' . $searchQuery . '%');
         }
 
         if ($locationFilter) {
-            // If location filter parameters arrive as strings or IDs, link to the relation mapping field
             $qb->andWhere('u.location = :location')
                ->setParameter('location', $locationFilter);
         }
@@ -166,13 +164,18 @@ class ClientController extends AbstractController
 
         $providers = $qb->getQuery()->getResult();
         $categories = $em->getRepository(Category::class)->findAll();
+        
+        // Fetch all regions dynamically from your Location registry table
+        $locations = $em->getRepository(Location::class)->findAll();
 
         return $this->render('client/professionals.html.twig', [
             'providers' => $providers,
             'categories' => $categories,
+            'locations' => $locations,
             'current_query' => $searchQuery,
             'current_location' => $locationFilter,
             'current_category' => $categoryFilter,
+            'user' => $user
         ]);
     }
 
@@ -197,7 +200,6 @@ class ClientController extends AbstractController
             if ($firstName) $user->setFirstName($firstName);
             if ($lastName) $user->setLastName($lastName);
             
-            // FIXED: Fetch the Location Entity instead of passing a raw input string to setLocation()
             if ($locationName) {
                 $locationEntity = $em->getRepository(Location::class)->findOneBy(['name' => $locationName]);
                 
@@ -221,12 +223,10 @@ class ClientController extends AbstractController
                     return $this->redirectToRoute('app_client_settings');
                 }
 
-                // Hash the plain password securely before updating database
                 $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($hashedPassword);
             }
 
-            // Flush changes down to MySQL database via Doctrine
             $em->flush();
 
             $this->addFlash('success', 'Your account settings have been updated successfully.');
@@ -242,11 +242,8 @@ class ClientController extends AbstractController
     {
         $roles = $user->getRoles();
         $isClient = in_array('ROLE_CLIENT', $roles, true);
-        $isProvider = in_array('ROLE_PROVIDER', $roles, true);
 
         if (!$isClient) {
-            // Don't add a flash here to avoid repeated messages on every page.
-            // The callers will handle redirecting provider users to the provider dashboard.
             return null;
         }
 

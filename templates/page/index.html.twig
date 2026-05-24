@@ -15,34 +15,23 @@
         {# HTML Form targeting the browse professionals route using standard GET parameters #}
         <form action="{{ path('app_client_professionals') }}" method="get">
             <div>
-                <input type="text" name="query" placeholder="What service do you need? (e.g. Plumber)">
+                {# CHANGED: Replaced search text input with a dynamic Category dropdown #}
+                <select name="category" id="category">
+                    <option value="">Select a service category...</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+
+                {# CHANGED: Replaced hardcoded options with an elegant database loop #}
                 <select name="location" id="location">
                     <option value="">All Regions</option>
-                    <option value="Tunis">Tunis</option>
-                    <option value="Sousse">Sousse</option>
-                    <option value="Sfax">Sfax</option>
-                    <option value="Ariana">Ariana</option>
-                    <option value="Béja">Béja</option>
-                    <option value="Bizerte">Bizerte</option>
-                    <option value="Gabès">Gabès</option>
-                    <option value="Gafsa">Gafsa</option>
-                    <option value="Kairouan">Kairouan</option>
-                    <option value="Kasserine">Kasserine</option>
-                    <option value="Kebili">Kebili</option>
-                    <option value="Mahdia">Mahdia</option>
-                    <option value="Manouba">Manouba</option>
-                    <option value="Medenine">Medenine</option>
-                    <option value="Monastir">Monastir</option>
-                    <option value="Nabeul">Nabeul</option>
-                    <option value="Sidi Bouzid">Sidi Bouzid</option>
-                    <option value="Siliana">Siliana</option>
-                    <option value="Tataouine">Tataouine</option>
-                    <option value="Tozeur">Tozeur</option>
-                    <option value="Zaghouan">Zaghouan</option>
-                    <option value="Ben Arous">Ben Arous</option>
-                    <option value="Kef">Kef</option>
-                    <option value="Jendouba">Jendouba</option>
+                    {% for loc in locations %}
+                        {# Matches either loc.name or loc.id depending on how your search filter processes locations #}
+                        <option value="{{ loc.name }}">{{ loc.name }}</option>
+                    {% endfor %}
                 </select>
+                
                 <button type="submit">Search</button>
             </div> 
         </form>
