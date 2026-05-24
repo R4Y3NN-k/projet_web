@@ -12,34 +12,55 @@ use Faker\Factory;
 
 class CommandFixtures extends Fixture implements DependentFixtureInterface
 {
-    private const STATUSES = ['pending', 'accepted', 'in_progress', 'completed', 'cancelled'];
+    private const STATUSES = ['Open', 'Assigned', 'In Progress', 'Completed', 'Cancelled'];
 
     public function load(ObjectManager $manager): void
     {
-        return;
         $faker = Factory::create('fr_FR');
         
-        // Fetch clients and providers
+        // Fetch clients and categories
         $clients = $manager->getRepository(Client::class)->findAll();
-        $providers = $manager->getRepository(Provider::class)->findAll();
+        $categories = $manager->getRepository(\App\Entity\Category::class)->findAll();
 
-        if (empty($clients)) {
-            return; // Skip if no clients
+        if (empty($clients) || empty($categories)) {
+            return; // Skip if no clients or categories
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        $jobTitles = [
+            'Plumbing repair needed',
+            'Electrical socket installation',
+            'Garden maintenance required',
+            'Bathroom tiles repair',
+            'Kitchen cabinet painting',
+            'Door lock replacement',
+            'Window cleaning service',
+            'Wall painting needed',
+            'AC maintenance and cleaning',
+            'Furniture assembly',
+        ];
+
+        $descriptions = [
+            'Need someone to fix a leaking pipe under the sink',
+            'Two sockets in the kitchen need replacement - they are sparking',
+            'Need someone to trim hedges and mow the lawn',
+            'Bathroom tiles need repair and grouting',
+            'Kitchen cabinets need a fresh coat of paint',
+            'Front door lock is broken and needs replacement',
+            'Windows need thorough cleaning inside and out',
+            'Living room walls need fresh paint',
+            'Air conditioning unit needs maintenance and cleaning',
+            'IKEA furniture needs assembly and installation',
+        ];
+
+        for ($i = 0; $i < 10; $i++) {
             $command = new Command();
-            $command->setTitle($faker->words(3, true));
-            $command->setDescription($faker->paragraph());
-            $command->setPrice((string) $faker->randomFloat(2, 50, 5000));
-            $command->setStatus($faker->randomElement(self::STATUSES));
+            $command->setTitle($jobTitles[$i % count($jobTitles)]);
+            $command->setDescription($descriptions[$i % count($descriptions)]);
+            $command->setPrice((string) $faker->randomFloat(2, 30, 500));
+            $command->setStatus('Open'); // Only show Open jobs to providers
             $command->setCreatedAt(new \DateTimeImmutable($faker->dateTime()->format('Y-m-d H:i:s')));
             $command->setClient($clients[$faker->numberBetween(0, count($clients) - 1)]);
-            
-            // Randomly assign a provider
-            if ($faker->boolean(70) && !empty($providers)) {
-                $command->setProvider($providers[$faker->numberBetween(0, count($providers) - 1)]);
-            }
+            $command->setCategory($categories[$faker->numberBetween(0, count($categories) - 1)]);
 
             $manager->persist($command);
         }

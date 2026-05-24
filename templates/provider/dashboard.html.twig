@@ -27,27 +27,39 @@
                     <div class="stat-icon"><i class="fas fa-coins"></i></div>
                     <div class="stat-info">
                         <p>Total Earned</p>
-                        <h3>1,200 TND</h3>
+                        <h3>{{ totalEarned | number_format(2, '.', ',') }} TND</h3>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-check-double"></i></div>
                     <div class="stat-info">
                         <p>Jobs Completed</p>
-                        <h3>12</h3>
+                        <h3>{{ jobsCompleted }}</h3>
                     </div>
                 </div>
             </div>
 
             <div class="requests-section">
                 <h3 style="margin-bottom: 15px;">Your Current Gigs</h3>
-                <div class="request-item">
-                    <div>
-                        <h4 style="margin-bottom: 5px;">Bathroom Tiles Repair</h4>
-                        <span style="color: var(--text-muted); font-size: 0.85rem;">Client: Sarah B. • Due: Tomorrow</span>
+                {% if currentGigs|length > 0 %}
+                    {% for gig in currentGigs %}
+                        <div class="request-item">
+                            <div>
+                                <h4 style="margin-bottom: 5px;">{{ gig.title }}</h4>
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">Client: {{ gig.client.userAccount.firstName }} {{ gig.client.userAccount.lastName }} • Status: {{ gig.status }}</span>
+                                <p style="margin-top: 5px; color: var(--text-main); font-size: 0.9rem;">{{ gig.description }}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">{{ gig.price }} TND</h4>
+                                <button class="btn btn-outline" style="font-size: 0.8rem;" data-status="{{ gig.status }}">{{ gig.status === 'Assigned' ? 'Start Work' : 'Complete Job' }}</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                        <p>No active gigs. <a href="{{ path('app_provider_jobs') }}" style="color: var(--primary); font-weight: bold;">Browse jobs</a> to find work!</p>
                     </div>
-                    <button class="btn btn-outline" style="font-size: 0.8rem;">Update Status</button>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
