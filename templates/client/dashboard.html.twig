@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+
 {% endblock %}
 
 {% block body %}
@@ -19,7 +20,7 @@
 
         <div class="hub-main">
             <div class="hub-header">
-                <h2>Welcome to your Dashboard</h2>
+                <h2>Welcome back, {{ user.firstName }}! 👋</h2>
                 <button class="btn btn-primary">+ Post a New Job</button>
             </div>
 
@@ -28,14 +29,14 @@
                     <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                     <div class="stat-info">
                         <p>Jobs Posted</p>
-                        <h3>5</h3>
+                        <h3>{{ jobs_count }}</h3>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-wallet"></i></div>
                     <div class="stat-info">
                         <p>Total Spent</p>
-                        <h3>450 TND</h3>
+                        <h3>{{ total_spent }} TND</h3>
                     </div>
                 </div>
             </div>
@@ -43,27 +44,71 @@
             <div class="requests-section">
                 <h3 style="margin-bottom: 15px;">Your Active Requests</h3>
                 
-                <div class="request-item">
-                    <div>
-                        <h4 style="margin-bottom: 5px;">Fix Leaking Kitchen Pipe</h4>
-                        <span style="color: var(--text-muted); font-size: 0.85rem;"><i class="fas fa-clock"></i> Posted 2 days ago • Plumbing</span>
+                {% for command in requests %}
+                    <div class="request-item" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e1e5eb; padding: 15px 0;">
+                        <div style="flex: 1; padding-right: 20px;">
+                            {# 💡 Handled potential fallback if you haven't migrated the title property yet #}
+                            <h4 style="margin: 0 0 5px 0; font-size: 1.1rem; color: #1e293b;">
+                                {{ command.title|default('Job Request #' ~ command.id) }}
+                            </h4>
+                            <p class="request-description">{{ command.description }}</p>
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">
+                                <i class="fas fa-clock"></i> Posted {{ command.createdAt|date('d M Y') }} • <strong>{{ command.price }} TND</strong>
+                            </span>
+                        </div>
+                        <div>
+                            {% if command.provider is null %}
+                                <span class="badge status-awaiting"><i class="fas fa-hourglass-start"></i> Awaiting Pros</span>
+                            {% else %}
+                                <span class="badge status-progress"><i class="fas fa-tools"></i> Assigned ({{ command.status }})</span>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div>
-                        <span style="background: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">Awaiting Pros</span>
+                {% else %}
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i class="fas fa-folder-open" style="font-size: 2.5rem; margin-bottom: 15px; display:block; color: #cbd5e1;"></i>
+                        You have no active commands right now.
                     </div>
-                </div>
-
-                <div class="request-item">
-                    <div>
-                        <h4 style="margin-bottom: 5px;">Deep Clean Living Room</h4>
-                        <span style="color: var(--text-muted); font-size: 0.85rem;"><i class="fas fa-clock"></i> Posted 1 week ago • Cleaning</span>
-                    </div>
-                    <div>
-                        <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">In Progress</span>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
         </div>
     </div>
+    <div id="job-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Post a New Request</h2>
+                <button id="close-job-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            
+            <form id="new-job-form" action="#" method="post">
+                <div style="margin-bottom: 15px;">
+                    <label for="job-title" style="display: block; margin-bottom: 5px; font-weight: bold;">What do you need done?</label>
+                    <input type="text" id="job-title" name="title" placeholder="e.g., Fix a leaking pipe under the sink" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="job-category" style="display: block; margin-bottom: 5px; font-weight: bold;">Category</label>
+                    <select id="job-category" name="category" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="">Select a category...</option>
+                        <option value="plumbing">Plumbing</option>
+                        <option value="electrical">Electrical</option>
+                        <option value="cleaning">Cleaning</option>
+                        <option value="painting">Painting</option>
+                        <option value="carpentry">Carpentry</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="job-description" style="display: block; margin-bottom: 5px; font-weight: bold;">Description</label>
+                    <textarea id="job-description" name="description" rows="4" placeholder="Describe the issue in detail..." required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" style="width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Post Request</button>
+            </form>
+        </div>
+    </div>
+    {% block javascripts %}
+        <script src="{{ asset('js/jobPosting.js') }}"></script>
+    {% endblock %}
 {% endblock %}
