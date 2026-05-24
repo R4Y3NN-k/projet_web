@@ -23,14 +23,20 @@
                 <h1>SERVICE TN</h1>
                 
                 <div class="nav-center">
-                    <a href="{{ path('app_page') }}">Home</a>
-                    <a href="{{ path('app_explore_services') }}">Explore Services</a>
-                    {% if is_granted('ROLE_PROVIDER') %}
-                        <a href="{{ path('app_provider_dashboard') }}">My Dashboard</a>
-                    {% elseif is_granted('ROLE_CLIENT') %}
-                        <a href="{{ path('app_client_dashboard') }}">My Dashboard</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin_dashboard') }}">Admin Panel</a>
                     {% else %}
-                        <a href="{{ path('app_client_dashboard') }}">My Dashboard</a>
+                        {% if not is_granted('ROLE_PROVIDER') %}
+                            <a href="{{ path('app_page') }}">Home</a>
+                        {% endif %}
+                        <a href="{{ path('app_explore_services') }}">Explore Services</a>
+                        {% if is_granted('ROLE_PROVIDER') %}
+                            <a href="{{ path('app_provider_dashboard') }}">My Dashboard</a>
+                        {% elseif is_granted('ROLE_CLIENT') %}
+                            <a href="{{ path('app_client_dashboard') }}">My Dashboard</a>
+                        {% else %}
+                            <a href="{{ path('app_client_dashboard') }}">My Dashboard</a>
+                        {% endif %}
                     {% endif %}
                 </div>
 

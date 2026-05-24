@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Details - Service TN Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+            background: #f5f7fa;
+        }
+        .admin-sidebar {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-right: 1px solid #e1e5eb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-menu a {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #434343;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .admin-main {
+            padding: 30px;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        /* Confirmation Modal Styles */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.15);
+            padding: 30px;
+            z-index: 1000;
+            min-width: 350px;
+            animation: slideUp 0.3s ease;
+        }
+        .confirmation-modal.show {
+            display: block;
+        }
+        .confirmation-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .confirmation-modal-overlay.show {
+            display: block;
+        }
+        .confirmation-modal h3 {
+            margin: 0 0 15px 0;
+            color: #cf1322;
+            font-size: 18px;
+        }
+        .confirmation-modal p {
+            margin: 0 0 20px 0;
+            color: #434343;
+            line-height: 1.5;
+        }
+        .confirmation-modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .confirmation-modal-buttons button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-cancel {
+            background: #e1e5eb;
+            color: #434343;
+        }
+        .btn-cancel:hover {
+            background: #c5c9d1;
+        }
+        .btn-confirm-suspend {
+            background: #cf1322;
+            color: white;
+        }
+        .btn-confirm-suspend:hover {
+            background: #a01116;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a href="{{ path('app_admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_admin_users') }}" class="active"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{{ path('app_admin_providers') }}"><i class="fas fa-briefcase"></i> Providers</a>
+                <a href="{{ path('app_admin_clients') }}"><i class="fas fa-person"></i> Clients</a>
+                <a href="{{ path('app_admin_jobs') }}"><i class="fas fa-tasks"></i> Jobs</a>
+                <a href="{{ path('app_admin_categories') }}"><i class="fas fa-folder"></i> Categories</a>
+                <a href="{{ path('app_admin_settings') }}"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <a href="{{ path('app_admin_users') }}" style="color: #0369a1; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to Users</a>
+
+            <div class="content-card">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h2 style="margin: 0 0 10px 0;">{{ user.firstName }} {{ user.lastName }}</h2>
+                        <p style="color: var(--text-muted); margin: 0;">{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-top: 0;">Account Information</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">First Name</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.firstName }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Last Name</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.lastName }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Email</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Location</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.location.name }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Date of Birth</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.dateOfBirth ? user.dateOfBirth|date('d/m/Y') : '-' }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Address</p>
+                        <p style="margin: 0; font-weight: 600;">{{ user.fullAdress }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-top: 0;">User Roles</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    {% for role in user.roles %}
+                        <span style="background: #e6f2ff; color: #0369a1; border-radius: 9999px; padding: 8px 15px; font-size: 0.9rem;">{{ role }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="content-card" style="background: #fff1f0; border-left: 4px solid #cf1322;">
+                <h3 style="margin-top: 0; color: #cf1322;">Danger Zone</h3>
+                <p style="color: #434343; margin-bottom: 15px;">Suspending a user will prevent them from accessing the platform.</p>
+                <button type="button" class="btn btn-outline" style="border-color: #cf1322; color: #cf1322;" onclick="openSuspendModal();">Suspend User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal-overlay" id="suspendModalOverlay"></div>
+    <div class="confirmation-modal" id="suspendModal">
+        <h3>⚠️ Confirm User Suspension</h3>
+        <p>Are you sure you want to suspend <strong>{{ user.firstName }} {{ user.lastName }}</strong>?</p>
+        <p style="font-size: 0.9rem; color: #666;">This user will no longer be able to access the platform.</p>
+        <div class="confirmation-modal-buttons">
+            <button type="button" class="btn-cancel" onclick="closeSuspendModal();">Cancel</button>
+            <form method="post" action="{{ path('app_admin_user_suspend', {'id': user.id}) }}" style="display: inline; margin: 0;">
+                <button type="submit" class="btn-confirm-suspend">Yes, Suspend User</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openSuspendModal() {
+            document.getElementById('suspendModal').classList.add('show');
+            document.getElementById('suspendModalOverlay').classList.add('show');
+        }
+
+        function closeSuspendModal() {
+            document.getElementById('suspendModal').classList.remove('show');
+            document.getElementById('suspendModalOverlay').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('suspendModalOverlay').addEventListener('click', closeSuspendModal);
+    </script>
+{% endblock %}
