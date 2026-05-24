@@ -4,6 +4,8 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    {# Link our newly structured chat stylesheet to reuse action button classes #}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -22,28 +24,57 @@
                 <h2>Find a Professional 🔍</h2>
             </div>
 
-            <div class="filter-bar">
-                <input type="text" placeholder="Search by name or keyword...">
-                <select>
+            {# Unified search filter mechanism form submission #}
+            <form action="{{ path('app_client_professionals') }}" method="get" class="filter-bar" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" name="query" value="{{ current_query }}" placeholder="Search by name or keyword...">
+                
+                <select name="category">
                     <option value="">All Categories</option>
-                    <option value="plumbing">Plumbing</option>
-                    <option value="cleaning">Cleaning</option>
-                    <option value="electrical">Electrical</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {{ current_category == cat.id ? 'selected' : '' }}>{{ cat.name }}</option>
+                    {% endfor %}
                 </select>
-                <button class="btn btn-primary">Search</button>
-            </div>
+
+                <select name="location">
+                    <option value="">All Regions</option>
+                    <option value="Tunis" {{ current_location == 'Tunis' ? 'selected' : '' }}>Tunis</option>
+                    <option value="Sousse" {{ current_location == 'Sousse' ? 'selected' : '' }}>Sousse</option>
+                    <option value="Sfax" {{ current_location == 'Sfax' ? 'selected' : '' }}>Sfax</option>
+                    <option value="Ariana" {{ current_location == 'Ariana' ? 'selected' : '' }}>Ariana</option>
+                    <option value="Béja" {{ current_location == 'Béja' ? 'selected' : '' }}>Béja</option>
+                    <option value="Bizerte" {{ current_location == 'Bizerte' ? 'selected' : '' }}>Bizerte</option>
+                    <option value="Gabès" {{ current_location == 'Gabès' ? 'selected' : '' }}>Gabès</option>
+                    <option value="Gafsa" {{ current_location == 'Gafsa' ? 'selected' : '' }}>Gafsa</option>
+                    <option value="Kairouan" {{ current_location == 'Kairouan' ? 'selected' : '' }}>Kairouan</option>
+                    <option value="Kasserine" {{ current_location == 'Kasserine' ? 'selected' : '' }}>Kasserine</option>
+                    <option value="Kebili" {{ current_location == 'Kebili' ? 'selected' : '' }}>Kebili</option>
+                    <option value="Mahdia" {{ current_location == 'Mahdia' ? 'selected' : '' }}>Mahdia</option>
+                    <option value="Manouba" {{ current_location == 'Manouba' ? 'selected' : '' }}>Manouba</option>
+                    <option value="Medenine" {{ current_location == 'Medenine' ? 'selected' : '' }}>Medenine</option>
+                    <option value="Monastir" {{ current_location == 'Monastir' ? 'selected' : '' }}>Monastir</option>
+                    <option value="Nabeul" {{ current_location == 'Nabeul' ? 'selected' : '' }}>Nabeul</option>
+                    <option value="Sidi Bouzid" {{ current_location == 'Sidi Bouzid' ? 'selected' : '' }}>Sidi Bouzid</option>
+                    <option value="Siliana" {{ current_location == 'Siliana' ? 'selected' : '' }}>Siliana</option>
+                    <option value="Tataouine" {{ current_location == 'Tataouine' ? 'selected' : '' }}>Tataouine</option>
+                    <option value="Tozeur" {{ current_location == 'Tozeur' ? 'selected' : '' }}>Tozeur</option>
+                    <option value="Zaghouan" {{ current_location == 'Zaghouan' ? 'selected' : '' }}>Zaghouan</option>
+                    <option value="Ben Arous" {{ current_location == 'Ben Arous' ? 'selected' : '' }}>Ben Arous</option>
+                    <option value="Kef" {{ current_location == 'Kef' ? 'selected' : '' }}>Kef</option>
+                    <option value="Jendouba" {{ current_location == 'Jendouba' ? 'selected' : '' }}>Jendouba</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
 
             <div class="pro-grid">
                 {% for profile in providers %}
-                    {# Access the underlying base user account through relationship maps #}
                     {% set proUser = profile.userAccount %}
                     <div class="pro-card">
                         <img src="https://ui-avatars.com/api/?name={{ proUser.firstName }}+{{ proUser.lastName }}&background=2563eb&color=fff" alt="{{ proUser.firstName }}" class="pro-avatar">
                         <h3 style="margin-bottom: 5px;">{{ proUser.firstName }} {{ proUser.lastName|slice(0, 1) }}.</h3>
                         
-                        {# Pulls directly from your provider profile table fields #}
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">
-                            {{ profile.serviceCategory|default('Service Provider') }}
+                            {{ profile.category.name|default('Service Provider') }}
                         </p>
                         
                         <div style="color: #f1c40f; margin-bottom: 15px;">
@@ -51,12 +82,27 @@
                             <span style="color: var(--text-main); font-size: 0.85rem;">({{ profile.yearsOfExperience|default('0') }} yrs exp)</span>
                         </div>
                         
-                        <button class="btn btn-outline" style="width: 100%;" onclick="alert('Provider Region: {{ proUser.location }}')">Contact Pro</button>
+                        {# DYNAMIC CHAT NAVIGATION: Safe lookup context checks #}
+                        {% if user.clientProfile is defined and user.clientProfile.commands is defined and user.clientProfile.commands|length > 0 %}
+                            {% set latestJobId = (user.clientProfile.commands|first).id %}
+                            <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box;">
+                                <i class="fas fa-envelope"></i> Contact Pro
+                            </a>
+                        {% elseif active_requests is defined and active_requests|length > 0 %}
+                            {% set latestJobId = (active_requests|first).id %}
+                            <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box;">
+                                <i class="fas fa-envelope"></i> Contact Pro
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_client_dashboard') }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box; background-color: #64748b;" onclick="alert('Please post a service request on your dashboard first before initiating contact with service professionals.');">
+                                <i class="fas fa-envelope"></i> Contact Pro
+                            </a>
+                        {% endif %}
                     </div>
                 {% else %}
                     <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
                         <i class="fas fa-user-slash" style="font-size: 2.5rem; display:block; margin-bottom:15px; color:#cbd5e1;"></i>
-                        No professionals are currently registered.
+                        No professionals found matching those criteria.
                     </div>
                 {% endfor %}
             </div>

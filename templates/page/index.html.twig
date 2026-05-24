@@ -3,9 +3,7 @@
 {% block title %}Service TN - Home{% endblock %}
 
 {% block stylesheets %}
-
     <link rel="stylesheet" href="{{ asset('css/Home.css') }}">
-    
     <link rel="stylesheet" href="{{ asset('css/loginLogique.css') }}">
 {% endblock %}
 
@@ -13,46 +11,52 @@
     <section>  
         <h1>Any Service</h1>
         <h3>Fast, Insured, Expert Everyday Repairs</h3>
-        <div>
-            <input type="text" placeholder="What service do you need">
-            <select name="location" id="location">
-                <option value="TN">Tunis</option>
-                <option value="SO">Sousse</option>
-                <option value="SF">Sfax</option>
-                <option value="AR">Ariana</option>
-                <option value="BE">Béja</option>
-                <option value="BI">Bizerte</option>
-                <option value="GA">Gabès</option>
-                <option value="GO">Gafsa</option>
-                <option value="KR">Kairouan</option>
-                <option value="KA">Kasserine</option>
-                <option value="KE">Kebili</option>
-                <option value="MA">Mahdia</option>
-                <option value="MN">Manouba</option>
-                <option value="ME">Medenine</option>
-                <option value="">Monastir</option>
-                <option value="NB">Nabeul</option>
-                <option value="SB">Sidi Bouzid</option>
-                <option value="SI">Siliana</option>
-                <option value="TA">Tataouine</option>
-                <option value="TO">Tozeur</option>
-                <option value="ZA">Zaghouan</option>
-                <option value="BA">Ben Arous</option>
-                <option value="KE">Kef</option>
-                <option value="JE">Jendouba</option>
-            </select>
-            <button>Search</button>
-        </div> 
+        
+        {# HTML Form targeting the browse professionals route using standard GET parameters #}
+        <form action="{{ path('app_client_professionals') }}" method="get">
+            <div>
+                <input type="text" name="query" placeholder="What service do you need? (e.g. Plumber)">
+                <select name="location" id="location">
+                    <option value="">All Regions</option>
+                    <option value="Tunis">Tunis</option>
+                    <option value="Sousse">Sousse</option>
+                    <option value="Sfax">Sfax</option>
+                    <option value="Ariana">Ariana</option>
+                    <option value="Béja">Béja</option>
+                    <option value="Bizerte">Bizerte</option>
+                    <option value="Gabès">Gabès</option>
+                    <option value="Gafsa">Gafsa</option>
+                    <option value="Kairouan">Kairouan</option>
+                    <option value="Kasserine">Kasserine</option>
+                    <option value="Kebili">Kebili</option>
+                    <option value="Mahdia">Mahdia</option>
+                    <option value="Manouba">Manouba</option>
+                    <option value="Medenine">Medenine</option>
+                    <option value="Monastir">Monastir</option>
+                    <option value="Nabeul">Nabeul</option>
+                    <option value="Sidi Bouzid">Sidi Bouzid</option>
+                    <option value="Siliana">Siliana</option>
+                    <option value="Tataouine">Tataouine</option>
+                    <option value="Tozeur">Tozeur</option>
+                    <option value="Zaghouan">Zaghouan</option>
+                    <option value="Ben Arous">Ben Arous</option>
+                    <option value="Kef">Kef</option>
+                    <option value="Jendouba">Jendouba</option>
+                </select>
+                <button type="submit">Search</button>
+            </div> 
+        </form>
     </section>
 
     <section>
         <h1>Popular Categories</h1>
-        <div class="categories-wrapper"></div>
+        <div class="categories-wrapper">
             <div class="categories">
                 {% for category in categories %}
-                    <div class="category">
+                    {# Clicking a category card auto-searches for that category id #}
+                    <a href="{{ path('app_client_professionals', {'category': category.id}) }}" class="category" style="text-decoration: none; color: inherit; display: inline-block;">
                         <p>{{ category.name }}</p>
-                    </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>
@@ -63,12 +67,13 @@
         <div class="providers">
             {% for provider in providers %}
                 <div class="provider">
-                    <p>{{ provider.userAccount.firstName }} {{ provider.userAccount.lastName }}</p>
-                    <span>{{ provider.category.name }} ({{ provider.yearsOfExperience }} years)</span>
+                    <p style="font-weight: bold; margin-bottom: 2px;">{{ provider.userAccount.firstName }} {{ provider.userAccount.lastName }}</p>
+                    <span>
+                        <i class="fas fa-star" style="color: #f1c40f;"></i> 
+                        {{ provider.category.name|default('Professional') }} ({{ provider.yearsOfExperience }} years exp)
+                    </span>
                 </div>
             {% endfor %}
         </div>
     </section>
-
-
 {% endblock %}

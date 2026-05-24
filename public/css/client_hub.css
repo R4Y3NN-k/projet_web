@@ -265,3 +265,37 @@ hr {
     background: #d4edda; 
     color: #155724;
 }
+
+/* Chat Room Action Buttons */
+.btn-chat-action {
+    display: inline-block;
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+.btn-chat-action:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* Contact Pro Action Button */
+.btn-contact-pro {
+    display: inline-block;
+    background-color: #10b981; /* Clean Emerald Green Theme */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    text-align: center;
+}
+.btn-contact-pro:hover {
+    background-color: #059669;
+}

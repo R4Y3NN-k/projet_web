@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat - {{ command.title }} - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="chat-wrapper">
+    <div class="chat-header">
+        <div>
+            <h3>Conversation regarding: {{ command.title }}</h3>
+            <p>Status: <strong>{{ command.status }}</strong> | Budget: {{ command.price }} DT</p>
+        </div>
+        <a href="{{ path('app_client_dashboard') }}" class="btn-back-nav">← Back to Dashboard</a>
+    </div>
+
+    <div class="chat-messages" id="chatWindow">
+        {% for msg in messages %}
+            {% set isMe = (msg.sender == user) %}
+            <div class="message-row {{ isMe ? 'sent' : 'received' }}">
+                <div class="message-box">
+                    <div class="message-text">{{ msg.content }}</div>
+                    <span class="message-time">{{ msg.createdAt|date('H:i') }}</span>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-chat-notice">
+                <i class="fas fa-comments"></i>
+                No messages yet. Send a message to start the conversation!
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="chat-footer">
+        <form method="POST" class="chat-form">
+            <input type="text" name="content" class="chat-input" placeholder="Type your message here..." required autocomplete="off" autofocus>
+            <button type="submit" class="chat-send-btn">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // 1. Instantly auto-scroll down to the latest message on page load
+    var objDiv = document.getElementById("chatWindow");
+    if (objDiv) {
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // 2. Automatically poll the MySQL database every 5 seconds to load newly arrived messages
+    setInterval(function() {
+        window.location.reload();
+    }, 5000);
+</script>
+{% endblock %}

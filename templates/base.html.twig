@@ -18,15 +18,13 @@
 
 {% block header %}
     {% if app.user %}
-        {# ========================================== #}
-        {# LOGGED IN HEADER (Dashboard Style)         #}
-        {# ========================================== #}
         <header class="header dashboard-top-nav">
             <nav>
                 <h1>SERVICE TN</h1>
                 
                 <div class="nav-center">
-                    <a href="{{ path('app_explore_service') }}">Explore Services</a>
+                    <a href="{{ path('app_page') }}">Home</a>
+                    <a href="{{ path('app_explore_services') }}">Explore Services</a>
                     <a href="{{ path('app_client_dashboard') }}">My Dashboard</a>
                 </div>
 
@@ -42,14 +40,11 @@
         </header>
 
     {% else %}
-        {# ========================================== #}
-        {# GUEST HEADER (Public Style)                #}
-        {# ========================================== #}
         <header class="header">
             <nav>
                 <h1>SERVICE TN</h1>
                 <a href="{{ path('app_page') }}">Home</a>
-                <a href="{{ path('app_explore_service') }}">Explore Services</a>
+                <a href="{{ path('app_explore_services') }}">Explore Services</a>
                 <a href="{{ path('app_how_it_works') }}">How it works</a>
                 <div class="nav-right">
                     {# Notice I added the 'login-trigger' class here just in case! #}

@@ -8,66 +8,65 @@
 
 {% block body %}
     <main>
+        <section class="services-section">
+            <div class="services-grid">
+                
+                {% for category in categories %}
+                    {# Lowercase comparison helper to match assets with database text securely #}
+                    {% set catNameLower = category.name|lower %}
 
+                    <div class="service-card">
+                        <div class="service-image-container">
+                            {# Check against known categories to display your custom image assets #}
+                            {% if 'plumb' in catNameLower %}
+                                <img src="{{ asset('img/plumbing.jpeg') }}" alt="Plumbing Services">
+                            {% elseif 'electr' in catNameLower %}
+                                <img src="{{ asset('img/electrical.jpeg') }}" alt="Electrical Services">
+                            {% elseif 'clean' in catNameLower %}
+                                <img src="{{ asset('img/cleaning.jpeg') }}" alt="Cleaning Services">
+                            {% elseif 'paint' in catNameLower or 'peint' in catNameLower %}
+                                <img src="{{ asset('img/painter.jpeg') }}" alt="Painting Services">
+                            {% elseif 'carpent' in catNameLower or 'menuis' in catNameLower %}
+                                <img src="{{ asset('img/carpentry.jpeg') }}" alt="Carpentry Services">
+                            {% elseif 'mov' in catNameLower or 'demen' in catNameLower %}
+                                <img src="{{ asset('img/moving.jpeg') }}" alt="Moving Services">
+                            {% else %}
+                                {# Default clean placeholder image if you create a new category in the future #}
+                                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80" alt="{{ category.name }}">
+                            {% endif %}
+                        </div>
 
-<section class="services-section">
-    <div class="services-grid">
-        
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/plumbing.jpeg') }}" alt="Plumbing Services">
+                        <h3>{{ category.name }}</h3>
+                        
+                        <p>
+                            {# Check against known categories to display your beautifully written text descriptions #}
+                            {% if 'plumb' in catNameLower %}
+                                Leaks, clogs, pipe repairs, and full installations. Find certified plumbers ready to fix your water issues fast.
+                            {% elseif 'electr' in catNameLower %}
+                                Wiring, lighting fixtures, circuit breakers, and safe electrical repairs by licensed electricians.
+                            {% elseif 'clean' in catNameLower %}
+                                Deep house cleaning, move-in/move-out cleans, and routine maid services for a spotless home.
+                            {% elseif 'paint' in catNameLower or 'peint' in catNameLower %}
+                                Interior and exterior painting, wallpaper removal, and wall repairs for a fresh new look.
+                            {% elseif 'carpent' in catNameLower or 'menuis' in catNameLower %}
+                                Custom furniture, door repairs, cabinetry, and structural woodworking from skilled carpenters.
+                            {% elseif 'mov' in catNameLower or 'demen' in catNameLower %}
+                                Safe and efficient packing, loading, and transportation services to make your move stress-free.
+                            {% else %}
+                                Find top-performing, reliable, and professional service experts verified specifically for {{ category.name }} options.
+                            {% endif %}
+                        </p>
+
+                        {# FIXED: Dynamically link to browse directory matching this specific category ID #}
+                        <a href="{{ path('app_client_professionals', {'category': category.id}) }}" class="view-btn">View Experts</a>
+                    </div>
+                {% else %}
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+                        No categories are currently loaded in the database.
+                    </div>
+                {% endfor %}
+
             </div>
-            <h3>Plumbing</h3>
-            <p>Leaks, clogs, pipe repairs, and full installations. Find certified plumbers ready to fix your water issues fast.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/electrical.jpeg') }}" alt="Electrical Services">
-            </div>
-            <h3>Electrical</h3>
-            <p>Wiring, lighting fixtures, circuit breakers, and safe electrical repairs by licensed electricians.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/cleaning.jpeg') }}" alt="Cleaning Services">
-            </div>
-            <h3>Cleaning</h3>
-            <p>Deep house cleaning, move-in/move-out cleans, and routine maid services for a spotless home.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/painter.jpeg') }}" alt="Painting Services">
-            </div>
-            <h3>Painting</h3>
-            <p>Interior and exterior painting, wallpaper removal, and wall repairs for a fresh new look.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/carpentry.jpeg') }}" alt="Carpentry Services">
-            </div>
-            <h3>Carpentry</h3>
-            <p>Custom furniture, door repairs, cabinetry, and structural woodworking from skilled carpenters.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-        <div class="service-card">
-            <div class="service-image-container">
-                <img src="{{ asset('img/moving.jpeg') }}" alt="Moving Services">
-            </div>
-            <h3>Moving</h3>
-            <p>Safe and efficient packing, loading, and transportation services to make your move stress-free.</p>
-            <a href="#" class="view-btn">View Experts</a>
-        </div>
-
-    </div>
-</section>
+        </section>
     </main>
 {% endblock %}

@@ -13,9 +13,10 @@ final class PageController extends AbstractController
     #[Route('/', name: 'app_page')]
     public function index(ProviderRepository $providerRepo, CategoryRepository $categoryRepo): Response
     {
-        $providers = $providerRepo->findAll();
+        // Limit to top 3 providers based on experience for the home page showcase
+        $providers = $providerRepo->findBy([], ['yearsOfExperience' => 'DESC'], 3);
         $categories = $categoryRepo->findAll();
-        //dd('HELLO');
+
         return $this->render('page/index.html.twig', [
             'providers' => $providers,
             'categories' => $categories,

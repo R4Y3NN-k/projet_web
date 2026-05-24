@@ -4,7 +4,8 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
-
+    {# Link our newly structured chat stylesheet to reuse navigation classes #}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -21,7 +22,7 @@
         <div class="hub-main">
             <div class="hub-header">
                 <h2>Welcome back, {{ user.firstName }}! 👋</h2>
-                <button class="btn btn-primary">+ Post a New Job</button>
+                <button class="btn btn-primary" id="open-job-modal-btn">+ Post a New Job</button>
             </div>
 
             <div class="stats-grid">
@@ -41,27 +42,41 @@
                 </div>
             </div>
 
+            {# ==================== SECTION 1: ACTIVE REQUESTS ==================== #}
             <div class="requests-section">
                 <h3 style="margin-bottom: 15px;">Your Active Requests</h3>
                 
-                {% for command in requests %}
+                {% for command in active_requests %}
                     <div class="request-item" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e1e5eb; padding: 15px 0;">
                         <div style="flex: 1; padding-right: 20px;">
-                            {# 💡 Handled potential fallback if you haven't migrated the title property yet #}
                             <h4 style="margin: 0 0 5px 0; font-size: 1.1rem; color: #1e293b;">
                                 {{ command.title|default('Job Request #' ~ command.id) }}
                             </h4>
-                            <p class="request-description">{{ command.description }}</p>
+                            <p class="request-description" style="margin: 5px 0;">{{ command.description }}</p>
                             <span style="color: var(--text-muted); font-size: 0.85rem;">
                                 <i class="fas fa-clock"></i> Posted {{ command.createdAt|date('d M Y') }} • <strong>{{ command.price }} TND</strong>
                             </span>
                         </div>
-                        <div>
-                            {% if command.provider is null %}
-                                <span class="badge status-awaiting"><i class="fas fa-hourglass-start"></i> Awaiting Pros</span>
-                            {% else %}
-                                <span class="badge status-progress"><i class="fas fa-tools"></i> Assigned ({{ command.status }})</span>
-                            {% endif %}
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div>
+                                {% if command.provider is null %}
+                                    <span class="badge status-awaiting" style="background: #fff7e6; color: #d46b08; border: 1px solid #ffd591; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem;"><i class="fas fa-hourglass-start"></i> Awaiting Pros</span>
+                                {% else %}
+                                    <span class="badge status-progress" style="background: #e6f7ff; color: #096dd9; border: 1px solid #91d5ff; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem;"><i class="fas fa-tools"></i> Assigned ({{ command.status }})</span>
+                                {% endif %}
+                            </div>
+                            
+                            {# Action Entrance: Open Chat Room Room Connection Button #}
+                            <a href="{{ path('app_client_chat', {'id': command.id}) }}" class="btn-chat-action">
+                                <i class="fas fa-comments"></i> Chat
+                            </a>
+                            
+                            {# Secure cancellation trigger form #}
+                            <form action="{{ path('app_client_command_cancel', {'id': command.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to cancel this job request?');" style="margin: 0;">
+                                <button type="submit" class="btn-cancel" style="background: #fff1f0; color: #cf1322; border: 1px solid #ffa39e; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                                    <i class="fas fa-times-circle"></i> Cancel
+                                </button>
+                            </form>
                         </div>
                     </div>
                 {% else %}
@@ -72,16 +87,85 @@
                 {% endfor %}
             </div>
 
+            {# ==================== SECTION 2: COMPREHENSIVE JOB LOG HISTORY ==================== #}
+            <div class="history-section" style="margin-top: 40px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 15px; color: #1e293b;">All Requests & History</h3>
+                <div style="overflow-x: auto;">
+                    <table class="history-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #f1f5f9; background-color: #f8fafc; color: #64748b;">
+                                <th style="padding: 12px;">Job Title</th>
+                                <th style="padding: 12px;">Category</th>
+                                <th style="padding: 12px;">Date Posted</th>
+                                <th style="padding: 12px;">Budget</th>
+                                <th style="padding: 12px;">Assigned Pro</th>
+                                <th style="padding: 12px;">Status</th>
+                                <th style="padding: 12px; text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for command in all_requests %}
+                                <tr style="border-bottom: 1px solid #f1f5f9; color: #334155;">
+                                    <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">
+                                        {{ command.title|default('Job Request #' ~ command.id) }}
+                                    </td>
+                                    <td style="padding: 14px 12px;">
+                                        <span style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #475569;">
+                                            {{ command.category.name }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 14px 12px; color: #64748b;">{{ command.createdAt|date('d M Y') }}</td>
+                                    <td style="padding: 14px 12px; font-weight: 600;">{{ command.price }} TND</td>
+                                    <td style="padding: 14px 12px;">
+                                        {% if command.provider %}
+                                            <span style="color: #0f172a; font-weight: 500;">
+                                                <i class="fas fa-user-tie" style="color: #64748b; margin-right: 4px;"></i>
+                                                {{ command.provider.userAccount.firstName }} {{ command.provider.userAccount.lastName }}
+                                            </span>
+                                        {% else %}
+                                            <span style="color: #94a3b8; font-style: italic;">None Assigned</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="padding: 14px 12px;">
+                                        {% if command.status == 'Open' %}
+                                            <span style="color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">Open</span>
+                                        {% elseif command.status == 'In Progress' %}
+                                            <span style="color: #9a3412; background: #fff7ed; border: 1px solid #ffedd5; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">In Progress</span>
+                                        {% elseif command.status == 'Cancelled' %}
+                                            <span style="color: #991b1b; background: #fef2f2; border: 1px solid #fee2e2; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">Cancelled</span>
+                                        {% else %}
+                                            <span style="color: #1e40af; background: #eff6ff; border: 1px solid #dbeafe; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">{{ command.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="padding: 14px 12px; text-align: center;">
+                                        <a href="{{ path('app_client_chat', {'id': command.id}) }}" class="btn-chat-action">
+                                            <i class="fas fa-comments"></i> Chat
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" style="padding: 30px; text-align: center; color: #94a3b8;">
+                                        No history log profile logs found.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
-<div id="job-modal" class="modal-overlay" style="display: none;">
+
+    {# ==================== MODAL OVERLAY ==================== #}
+    <div id="job-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content" style="max-width: 600px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="margin: 0;">Post a New Request</h2>
                 <button id="close-job-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
             </div>
             
-            {# Action updated to point to the dashboard route #}
             <form id="new-job-form" action="{{ path('app_client_dashboard') }}" method="post">
                 <div style="margin-bottom: 15px;">
                     <label for="job-title" style="display: block; margin-bottom: 5px; font-weight: bold;">What do you need done?</label>
@@ -92,7 +176,6 @@
                     <label for="job-category" style="display: block; margin-bottom: 5px; font-weight: bold;">Category</label>
                     <select id="job-category" name="category" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                         <option value="">Select a category...</option>
-                        {# Dynamically loop database categories #}
                         {% for cat in categories %}
                             <option value="{{ cat.id }}">{{ cat.name }}</option>
                         {% endfor %}
@@ -104,7 +187,6 @@
                     <textarea id="job-description" name="description" rows="4" placeholder="Describe the issue in detail..." required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; resize: vertical;"></textarea>
                 </div>
 
-                {# Added the missing Price input! #}
                 <div style="margin-bottom: 20px;">
                     <label for="job-price" style="display: block; margin-bottom: 5px; font-weight: bold;">Suggested Price (TND)</label>
                     <input type="number" id="job-price" name="price" step="0.5" min="1" placeholder="0.00" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
@@ -114,7 +196,22 @@
             </form>
         </div>
     </div>
+
     {% block javascripts %}
         <script src="{{ asset('js/jobPosting.js') }}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const openBtn = document.getElementById('open-job-modal-btn');
+                const closeBtn = document.getElementById('close-job-modal');
+                const modal = document.getElementById('job-modal');
+                
+                if(openBtn && modal) {
+                    openBtn.addEventListener('click', () => modal.style.display = 'flex');
+                }
+                if(closeBtn && modal) {
+                    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+                }
+            });
+        </script>
     {% endblock %}
 {% endblock %}
