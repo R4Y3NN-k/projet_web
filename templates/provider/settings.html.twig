@@ -55,7 +55,7 @@
             </div>
 
             <div class="settings-card">
-                <form>
+                <form method="post" action="{{ path('app_provider_settings') }}">
                     <h3 style="margin-bottom: 20px;"><i class="fas fa-id-card"></i> Identity & Service</h3>
                     
                     <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 20px; background: #f0f7ff; border: 1px dashed var(--primary); border-radius: 10px;">
@@ -66,37 +66,38 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Business / Professional Name</label>
-                        <input type="text" class="form-control" value="Ahmed M. Plumbing & Repairs">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Professional Bio (Tell clients why to hire you)</label>
-                        <textarea class="form-control" rows="4">Licensed plumber with 10+ years experience in Tunis. Specialized in emergency repairs and bathroom installations.</textarea>
+                    <div style="display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" class="form-control" value="{{ user.firstName }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" class="form-control" value="{{ user.lastName }}">
+                        </div>
                     </div>
 
                     <div style="display: flex; gap: 20px;">
                         <div class="form-group" style="flex: 1;">
                             <label>Primary Category</label>
-                            <select class="form-control">
-                                <option selected>Plumbing</option>
-                                <option>Electrical</option>
-                                <option>Painting</option>
+                            <select name="category" class="form-control">
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {{ provider.category and provider.category.id == category.id ? 'selected' : '' }}>{{ category.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="form-group" style="flex: 1;">
-                            <label>Phone Number (WhatsApp)</label>
-                            <input type="text" class="form-control" value="+216 55 123 456">
+                            <label>Years of Experience</label>
+                            <input type="number" name="yearsOfExperience" class="form-control" min="0" value="{{ provider.yearsOfExperience }}">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Working Region</label>
-                        <select class="form-control">
-                            <option>Tunis & Suburbs</option>
-                            <option>Sousse / Sahel</option>
-                            <option>Sfax City</option>
+                        <select name="location" class="form-control">
+                            {% for location in locations %}
+                                <option value="{{ location.id }}" {{ user.location and user.location.id == location.id ? 'selected' : '' }}>{{ location.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
@@ -106,18 +107,18 @@
                     
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" value="ahmed.plumber@service.tn" readonly style="background: #eee; cursor: not-allowed;">
+                        <input type="email" class="form-control" value="{{ user.email }}" readonly style="background: #eee; cursor: not-allowed;">
                         <small>Contact support to change your registered professional email.</small>
                     </div>
 
                     <div style="display: flex; gap: 20px;">
                         <div class="form-group" style="flex: 1;">
                             <label>New Password</label>
-                            <input type="password" class="form-control">
+                            <input type="password" name="new_password" class="form-control">
                         </div>
                         <div class="form-group" style="flex: 1;">
                             <label>Confirm Password</label>
-                            <input type="password" class="form-control">
+                            <input type="password" name="confirm_password" class="form-control">
                         </div>
                     </div>
 

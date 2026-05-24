@@ -39,27 +39,63 @@
                 </div>
             </div>
 
-            <div class="requests-section">
-                <h3 style="margin-bottom: 15px;">Your Current Gigs</h3>
-                {% if currentGigs|length > 0 %}
-                    {% for gig in currentGigs %}
-                        <div class="request-item">
-                            <div>
-                                <h4 style="margin-bottom: 5px;">{{ gig.title }}</h4>
-                                <span style="color: var(--text-muted); font-size: 0.85rem;">Client: {{ gig.client.userAccount.firstName }} {{ gig.client.userAccount.lastName }} • Status: {{ gig.status }}</span>
-                                <p style="margin-top: 5px; color: var(--text-main); font-size: 0.9rem;">{{ gig.description }}</p>
+            <div class="requests-section" style="display: grid; gap: 24px; grid-template-columns: repeat(2, minmax(0, 1fr));">
+                <div class="request-column" style="background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);">
+                    <h3 style="margin-bottom: 15px;">Waiting for Client Response</h3>
+
+                    {% if waitingForClientResponse|length > 0 %}
+                        {% for gig in waitingForClientResponse %}
+                            <div class="request-item" style="padding: 18px 0; border-bottom: 1px solid #eef2ff;">
+                                <div>
+                                    <h4 style="margin-bottom: 5px;">{{ gig.title }}</h4>
+                                    <span style="color: var(--text-muted); font-size: 0.85rem;">Client: {{ gig.client.userAccount.firstName }} {{ gig.client.userAccount.lastName }}</span>
+                                    <p style="margin-top: 8px; color: var(--text-main); font-size: 0.9rem;">{{ gig.description }}</p>
+                                </div>
+                                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                                    <span style="font-weight: 600; color: #0f172a;">{{ gig.price }} TND</span>
+                                    <span style="background: #fff7e6; color: #c2410c; border-radius: 9999px; padding: 6px 12px; font-size: 0.8rem;">{{ gig.status }}</span>
+                                </div>
+                                <div style="margin-top: 12px; display: flex; gap: 10px;">
+                                    <a href="{{ path('app_provider_chat', {'id': gig.id}) }}" class="btn btn-outline" style="font-size: 0.8rem;">Chat</a>
+                                </div>
                             </div>
-                            <div style="text-align: right;">
-                                <h4 style="color: var(--primary); margin-bottom: 10px;">{{ gig.price }} TND</h4>
-                                <button class="btn btn-outline" style="font-size: 0.8rem;" data-status="{{ gig.status }}">{{ gig.status === 'Assigned' ? 'Start Work' : 'Complete Job' }}</button>
-                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                            <p>No applications are awaiting client approval right now.</p>
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <div style="padding: 20px; text-align: center; color: var(--text-muted);">
-                        <p>No active gigs. <a href="{{ path('app_provider_jobs') }}" style="color: var(--primary); font-weight: bold;">Browse jobs</a> to find work!</p>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="request-column" style="background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);">
+                    <h3 style="margin-bottom: 15px;">Working for You</h3>
+
+                    {% if workingJobs|length > 0 %}
+                        {% for gig in workingJobs %}
+                            <div class="request-item" style="padding: 18px 0; border-bottom: 1px solid #eef2ff; display: flex; justify-content: space-between; gap: 16px; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h4 style="margin-bottom: 5px;">{{ gig.title }}</h4>
+                                    <span style="color: var(--text-muted); font-size: 0.85rem;">Client: {{ gig.client.userAccount.firstName }} {{ gig.client.userAccount.lastName }}</span>
+                                    <p style="margin-top: 8px; color: var(--text-main); font-size: 0.9rem;">{{ gig.description }}</p>
+                                    <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+                                        <span style="font-weight: 600; color: #0f172a;">{{ gig.price }} TND</span>
+                                        <span style="background: #e6f7ff; color: #0369a1; border-radius: 9999px; padding: 6px 12px; font-size: 0.8rem;">{{ gig.status }}</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center;">
+                                    <a href="{{ path('app_provider_chat', {'id': gig.id}) }}" class="btn btn-outline" style="font-size: 0.8rem;">Chat</a>
+                                    <form action="{{ path('app_provider_complete_work', {'id': gig.id}) }}" method="post" style="margin: 0; display: grid; place-items: center;">
+                                        <button type="submit" class="btn btn-primary" style="min-width: 140px;">Mark as Finished</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                            <p>No jobs are currently in progress. Once a client accepts your application, it will appear here.</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

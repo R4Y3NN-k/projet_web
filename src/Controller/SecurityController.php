@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request; // <-- Imported Request here
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends AbstractController
 {
@@ -33,5 +34,26 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route(path: '/post-login', name: 'app_post_login')]
+    public function postLogin(): RedirectResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_page');
+        }
+
+        // Send providers to provider dashboard, clients to client dashboard, others to homepage
+        if ($this->isGranted('ROLE_PROVIDER')) {
+            return $this->redirectToRoute('app_provider_dashboard');
+        }
+
+        if ($this->isGranted('ROLE_CLIENT')) {
+            return $this->redirectToRoute('app_client_dashboard');
+        }
+
+        return $this->redirectToRoute('app_page');
     }
 }

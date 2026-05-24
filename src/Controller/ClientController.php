@@ -20,11 +20,18 @@ class ClientController extends AbstractController
     public function dashboard(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        if (!$user) return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
-        $clientProfile = $em->getRepository(Client::class)->findOneBy(['userAccount' => $user]);
+        // If the logged-in user is a provider, send them to the provider dashboard.
+        if ($this->isGranted('ROLE_PROVIDER')) {
+            return $this->redirectToRoute('app_provider_dashboard');
+        }
+
+        $clientProfile = $this->resolveClientProfile($user, $em);
         if (!$clientProfile) {
-            throw $this->createNotFoundException('Client profile not found.');
+            return $this->redirectToRoute('app_login');
         }
 
         // Handle Posting a New Job Form Submission
@@ -90,9 +97,19 @@ class ClientController extends AbstractController
     public function cancelCommand(int $id, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        if (!$user) return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
-        $clientProfile = $em->getRepository(Client::class)->findOneBy(['userAccount' => $user]);
+        if ($this->isGranted('ROLE_PROVIDER')) {
+            return $this->redirectToRoute('app_provider_dashboard');
+        }
+
+        $clientProfile = $this->resolveClientProfile($user, $em);
+        if (!$clientProfile) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $command = $em->getRepository(Command::class)->find($id);
 
         // Security check: Make sure this command belongs to the currently logged-in client
@@ -108,7 +125,18 @@ class ClientController extends AbstractController
     public function browsePros(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        if (!$user) return $this->redirectToRoute('app_login');
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->isGranted('ROLE_PROVIDER')) {
+            return $this->redirectToRoute('app_provider_dashboard');
+        }
+
+        $clientProfile = $this->resolveClientProfile($user, $em);
+        if (!$clientProfile) {
+            return $this->redirectToRoute('app_login');
+        }
 
         // Capture query string parameter values sent from search forms
         $searchQuery = $request->query->get('query');
@@ -208,5 +236,28 @@ class ClientController extends AbstractController
         return $this->render('client/settings.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    private function resolveClientProfile($user, EntityManagerInterface $em): ?Client
+    {
+        $roles = $user->getRoles();
+        $isClient = in_array('ROLE_CLIENT', $roles, true);
+        $isProvider = in_array('ROLE_PROVIDER', $roles, true);
+
+        if (!$isClient) {
+            // Don't add a flash here to avoid repeated messages on every page.
+            // The callers will handle redirecting provider users to the provider dashboard.
+            return null;
+        }
+
+        $clientProfile = $em->getRepository(Client::class)->findOneBy(['userAccount' => $user]);
+        if (!$clientProfile) {
+            $clientProfile = new Client();
+            $clientProfile->setUserAccount($user);
+            $em->persist($clientProfile);
+            $em->flush();
+        }
+
+        return $clientProfile;
     }
 }

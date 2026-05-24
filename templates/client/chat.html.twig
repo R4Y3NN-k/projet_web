@@ -13,7 +13,7 @@
             <h3>Conversation regarding: {{ command.title }}</h3>
             <p>Status: <strong>{{ command.status }}</strong> | Budget: {{ command.price }} DT</p>
         </div>
-        <a href="{{ path('app_client_dashboard') }}" class="btn-back-nav">← Back to Dashboard</a>
+        <a href="{{ path(backRoute|default('app_client_dashboard')) }}" class="btn-back-nav">← Back to Dashboard</a>
     </div>
 
     <div class="chat-messages" id="chatWindow">

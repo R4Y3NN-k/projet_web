@@ -30,7 +30,8 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-                default_target_path: app_page
+                # send users to a post-login route which will redirect based on role
+                default_target_path: app_post_login
                 always_use_default_target_path: false
 
             # PERFECT FIX: Dedicated check_path for your JavaScript popup login
