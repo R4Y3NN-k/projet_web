@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Settings - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+            background: #f5f7fa;
+        }
+        .admin-sidebar {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-right: 1px solid #e1e5eb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-menu a {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #434343;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .admin-main {
+            padding: 30px;
+        }
+        .admin-header h2 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a href="{{ path('app_admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_admin_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{{ path('app_admin_providers') }}"><i class="fas fa-briefcase"></i> Providers</a>
+                <a href="{{ path('app_admin_clients') }}"><i class="fas fa-person"></i> Clients</a>
+                <a href="{{ path('app_admin_jobs') }}"><i class="fas fa-tasks"></i> Jobs</a>
+                <a href="{{ path('app_admin_categories') }}"><i class="fas fa-folder"></i> Categories</a>
+                <a href="{{ path('app_admin_settings') }}" class="active"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h2>⚙️ Admin Settings</h2>
+                <p style="color: var(--text-muted);">Configure platform settings and preferences.</p>
+            </div>
+
+            <div class="content-card">
+                <div style="padding: 20px;">
+                    <h3 style="margin-bottom: 20px; color: #0f172a;">Platform Configuration</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Settings management and platform configuration options are coming soon.</p>
+                    <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; border-left: 4px solid #0369a1;">
+                        <p style="margin: 0; color: #0369a1;"><strong>ℹ️ Note:</strong> Additional admin features and settings will be added as needed for platform management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

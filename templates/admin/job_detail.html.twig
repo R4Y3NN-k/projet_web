@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Job Details - Service TN Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+            background: #f5f7fa;
+        }
+        .admin-sidebar {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-right: 1px solid #e1e5eb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-menu a {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #434343;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .admin-main {
+            padding: 30px;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a href="{{ path('app_admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_admin_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{{ path('app_admin_providers') }}"><i class="fas fa-briefcase"></i> Providers</a>
+                <a href="{{ path('app_admin_clients') }}"><i class="fas fa-person"></i> Clients</a>
+                <a href="{{ path('app_admin_jobs') }}" class="active"><i class="fas fa-tasks"></i> Jobs</a>
+                <a href="{{ path('app_admin_categories') }}"><i class="fas fa-folder"></i> Categories</a>
+                <a href="{{ path('app_admin_settings') }}"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <a href="{{ path('app_admin_jobs') }}" style="color: #0369a1; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to Jobs</a>
+
+            <div class="content-card">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h2 style="margin: 0 0 10px 0;">{{ job.title }}</h2>
+                        <span style="background: 
+                            {% if job.status == 'Open' %} #fff7e6
+                            {% elseif job.status == 'Assigned' %} #fff1f0
+                            {% elseif job.status == 'In Progress' %} #e6f2ff
+                            {% else %} #f0f7f0
+                            {% endif %};
+                            color: 
+                            {% if job.status == 'Open' %} #b45309
+                            {% elseif job.status == 'Assigned' %} #cf1322
+                            {% elseif job.status == 'In Progress' %} #0369a1
+                            {% else %} #059669
+                            {% endif %};
+                            border-radius: 9999px; padding: 6px 12px; font-size: 0.9rem;">
+                            {{ job.status }}
+                        </span>
+                    </div>
+                    <h3 style="margin: 0; color: #0f172a;">{{ job.price }} TND</h3>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-top: 0;">Job Information</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Client</p>
+                        <p style="margin: 0; font-weight: 600;">{{ job.client.userAccount.firstName }} {{ job.client.userAccount.lastName }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Provider</p>
+                        <p style="margin: 0; font-weight: 600;">
+                            {% if job.provider %}
+                                {{ job.provider.userAccount.firstName }} {{ job.provider.userAccount.lastName }}
+                            {% else %}
+                                <span style="color: var(--text-muted);">Not Assigned</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Created At</p>
+                        <p style="margin: 0; font-weight: 600;">{{ job.createdAt ? job.createdAt|date('d/m/Y H:i') : '-' }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); margin: 0 0 5px 0;">Price</p>
+                        <p style="margin: 0; font-weight: 600;">{{ job.price }} TND</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-top: 0;">Description</h3>
+                <p style="color: #434343; line-height: 1.6;">{{ job.description }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

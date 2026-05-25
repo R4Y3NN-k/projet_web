@@ -1,0 +1,225 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+            background: #f5f7fa;
+        }
+        .admin-sidebar {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-right: 1px solid #e1e5eb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-menu a {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #434343;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .admin-main {
+            padding: 30px;
+        }
+        .admin-header {
+            margin-bottom: 30px;
+        }
+        .admin-header h2 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        .stat-info h3 {
+            font-size: 24px;
+            color: #0f172a;
+            margin: 5px 0 0 0;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a href="{{ path('app_admin_dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_admin_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{{ path('app_admin_providers') }}"><i class="fas fa-briefcase"></i> Providers</a>
+                <a href="{{ path('app_admin_clients') }}"><i class="fas fa-person"></i> Clients</a>
+                <a href="{{ path('app_admin_jobs') }}"><i class="fas fa-tasks"></i> Jobs</a>
+                <a href="{{ path('app_admin_categories') }}"><i class="fas fa-folder"></i> Categories</a>
+                <a href="{{ path('app_admin_settings') }}"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h2>📊 Admin Dashboard</h2>
+                <p style="color: var(--text-muted);">Welcome back! Here's an overview of your platform.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <p>Total Users</p>
+                        <h3>{{ totalUsers }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f0f7ff; color: #059669;"><i class="fas fa-briefcase"></i></div>
+                    <div class="stat-info">
+                        <p>Total Providers</p>
+                        <h3>{{ totalProviders }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f6f0ff; color: #7c3aed;"><i class="fas fa-person"></i></div>
+                    <div class="stat-info">
+                        <p>Total Clients</p>
+                        <h3>{{ totalClients }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff7e6; color: #b45309;"><i class="fas fa-tasks"></i></div>
+                    <div class="stat-info">
+                        <p>Total Jobs</p>
+                        <h3>{{ totalJobs }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff1f0; color: #cf1322;"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <p>Total Platform Earnings</p>
+                        <h3>{{ totalEarnings | number_format(2, '.', ',') }} TND</h3>
+                    </div>
+                </div>
+                <div class="content-card" style="padding: 20px;">
+                    <h3 style="margin-bottom: 15px;">Job Status Distribution</h3>
+                    <div style="display: grid; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Open</span>
+                            <strong>{{ openJobs }}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Assigned</span>
+                            <strong>{{ assignedJobs }}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>In Progress</span>
+                            <strong>{{ inProgressJobs }}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Completed</span>
+                            <strong>{{ completedJobs }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px;">📋 Recent Jobs</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e1e5eb;">
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Job Title</th>
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Client</th>
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Provider</th>
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Status</th>
+                            <th style="text-align: right; padding: 12px; font-weight: 600;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in recentJobs %}
+                            <tr style="border-bottom: 1px solid #e1e5eb;">
+                                <td style="padding: 12px;"><a href="{{ path('app_admin_job_detail', {'id': job.id}) }}" style="color: #0369a1; text-decoration: none;">{{ job.title }}</a></td>
+                                <td style="padding: 12px;">{{ job.client.userAccount.firstName }} {{ job.client.userAccount.lastName }}</td>
+                                <td style="padding: 12px;">
+                                    {% if job.provider %}
+                                        {{ job.provider.userAccount.firstName }} {{ job.provider.userAccount.lastName }}
+                                    {% else %}
+                                        <span style="color: var(--text-muted);">-</span>
+                                    {% endif %}
+                                </td>
+                                <td style="padding: 12px;">
+                                    <span style="background: 
+                                        {% if job.status == 'Open' %} #fff7e6
+                                        {% elseif job.status == 'Assigned' %} #fff1f0
+                                        {% elseif job.status == 'In Progress' %} #e6f2ff
+                                        {% else %} #f0f7f0
+                                        {% endif %};
+                                        color: 
+                                        {% if job.status == 'Open' %} #b45309
+                                        {% elseif job.status == 'Assigned' %} #cf1322
+                                        {% elseif job.status == 'In Progress' %} #0369a1
+                                        {% else %} #059669
+                                        {% endif %};
+                                        border-radius: 9999px; padding: 6px 12px; font-size: 0.8rem;">
+                                        {{ job.status }}
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; text-align: right; font-weight: 600;">{{ job.price }} TND</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

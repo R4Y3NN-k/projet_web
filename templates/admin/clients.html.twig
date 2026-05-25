@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Clients - Service TN Admin{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/client_hub.css') }}">
+    <style>
+        .admin-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+            background: #f5f7fa;
+        }
+        .admin-sidebar {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-right: 1px solid #e1e5eb;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-menu a {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #434343;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: #e6f2ff;
+            color: #0369a1;
+        }
+        .admin-main {
+            padding: 30px;
+        }
+        .admin-header h2 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a href="{{ path('app_admin_dashboard') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ path('app_admin_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+                <a href="{{ path('app_admin_providers') }}"><i class="fas fa-briefcase"></i> Providers</a>
+                <a href="{{ path('app_admin_clients') }}" class="active"><i class="fas fa-person"></i> Clients</a>
+                <a href="{{ path('app_admin_jobs') }}"><i class="fas fa-tasks"></i> Jobs</a>
+                <a href="{{ path('app_admin_categories') }}"><i class="fas fa-folder"></i> Categories</a>
+                <a href="{{ path('app_admin_settings') }}"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-header">
+                <h2>👤 Manage Clients</h2>
+                <p style="color: var(--text-muted);">View all clients on the platform.</p>
+            </div>
+
+            <div class="content-card">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e1e5eb;">
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Name</th>
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Email</th>
+                            <th style="text-align: left; padding: 12px; font-weight: 600;">Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                            <tr style="border-bottom: 1px solid #e1e5eb;">
+                                <td style="padding: 12px;"><strong>{{ client.userAccount.firstName }} {{ client.userAccount.lastName }}</strong></td>
+                                <td style="padding: 12px;">{{ client.userAccount.email }}</td>
+                                <td style="padding: 12px;">{{ client.userAccount.location.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -13,6 +13,11 @@ final class PageController extends AbstractController
     #[Route('/', name: 'app_page')]
     public function index(ProviderRepository $providerRepo, CategoryRepository $categoryRepo): Response
     {
+        // Redirect providers to their dashboard
+        if ($this->isGranted('ROLE_PROVIDER')) {
+            return $this->redirectToRoute('app_provider_dashboard');
+        }
+
         // Limit to top 3 providers based on experience for the home page showcase
         $providers = $providerRepo->findBy([], ['yearsOfExperience' => 'DESC'], 3);
         $categories = $categoryRepo->findAll();
