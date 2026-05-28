@@ -99,7 +99,6 @@
                                 </a>
                             </div>
                         {% else %}
-<<<<<<< HEAD
                             <div style="display: flex; gap: 5px; width: 100%;">
                                 <a href="{{ path('app_client_dashboard') }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; flex: 1; background-color: #64748b; box-sizing: border-box;" onclick="alert('Please post a service request on your dashboard first before initiating contact with service professionals.');">
                                     <i class="fas fa-envelope"></i> Contact Pro
@@ -108,12 +107,6 @@
                                     <i class="fas fa-flag"></i>
                                 </a>
                             </div>
-=======
-                            {# UPDATED: Displays the inline alert component instantly on click #}
-                            <button type="button" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box; background-color: #64748b; border: none; cursor: pointer;" onclick="document.getElementById('inline-warning-card').style.display = 'flex'; window.scrollTo({top: 0, behavior: 'smooth'});">
-                                <i class="fas fa-envelope"></i> Contact Pro
-                            </button>
->>>>>>> ae9be589d8878e79ae828a80e91a2a1325b85184
                         {% endif %}
                     </div>
                 {% else %}
