@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update Profile - Service TN{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .update-profile-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .update-profile-container h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .current-photo {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .current-photo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark, #1a5f7a);
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="update-profile-container">
+        <h2><i class="fas fa-user-edit"></i> Update Your Profile</h2>
+
+        {{ form_start(form) }}
+            <div class="form-group">
+                <label>Current Profile Photo</label>
+                {% if provider.profilePhoto %}
+                    <div class="current-photo">
+                        <img src="{{ asset('uploads/providers/' ~ provider.profilePhoto) }}" alt="{{ provider.userAccount.firstName }}">
+                        <p>Current photo</p>
+                    </div>
+                {% else %}
+                    <div class="current-photo">
+                        <img src="https://ui-avatars.com/api/?name={{ provider.userAccount.firstName }}+{{ provider.userAccount.lastName }}&background=2563eb&color=fff&size=120" alt="Default">
+                        <p>No photo uploaded yet</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.profilePhoto) }}
+                {{ form_widget(form.profilePhoto, { 'attr': { 'class': 'form-control' } }) }}
+                <div class="help-text">
+                    <i class="fas fa-info-circle"></i>
+                    Accepted formats: JPEG, PNG, GIF (Max 5MB)
+                </div>
+                {{ form_errors(form.profilePhoto) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.bio) }}
+                {{ form_widget(form.bio, { 'attr': { 'class': 'form-control' } }) }}
+                <div class="help-text">
+                    <i class="fas fa-info-circle"></i>
+                    Tell clients about your experience, skills, and what makes you unique
+                </div>
+                {{ form_errors(form.bio) }}
+            </div>
+
+            <div class="form-actions">
+                {{ form_widget(form.submit, { 'attr': { 'class': 'btn btn-primary' } }) }}
+                <a href="{{ path('app_provider_settings') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

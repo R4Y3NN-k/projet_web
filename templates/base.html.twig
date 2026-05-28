@@ -45,9 +45,34 @@
                         <i class="fas fa-bell"></i>
                         <span class="notification-dot"></span>
                     </button>
-                    
-                    <a href="{{ path('app_logout') }}" class="btn btn-outline" style="border-color: #ff4d4f; color: #ff4d4f;">Log Out</a>
+
+                    <!-- User Dropdown Menu -->
+                    <div class="dropdown" style="display: inline-block; position: relative;">
+                        <button class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);" id="userDropdown">
+                            <i class="fas fa-user"></i> {{ app.user.firstName|default('User') }}
+                        </button>
+                        <div class="dropdown-menu" style="display: none; position: absolute; right: 0; background: white; min-width: 200px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 5px; z-index: 1000;">
+                          
+                            <a href="{{ path('app_logout') }}" style="display: block; padding: 10px 15px; color: #ff4d4f; text-decoration: none;">
+                                <i class="fas fa-sign-out-alt"></i> Log Out
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
+                <script>
+                    document.getElementById('userDropdown').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const menu = this.nextElementSibling;
+                        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+                    });
+                    document.addEventListener('click', function(e) {
+                        const dropdown = document.querySelector('.dropdown');
+                        if (!dropdown.contains(e.target)) {
+                            dropdown.querySelector('.dropdown-menu').style.display = 'none';
+                        }
+                    });
+                </script>
             </nav>
         </header>
 

@@ -1,0 +1,93 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Reports Against Me - ServiceHub{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h2 class="mb-4">Reports Against Me</h2>
+
+            {% if reports is empty %}
+                <div class="alert alert-success" role="alert">
+                    <strong>Great!</strong> You don't have any reports against you.
+                </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>Notice:</strong> You have {{ reports|length }} report(s) against you. Our moderation team reviews all reports carefully.
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Reporter</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                                <th>Date Submitted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ report.reporter.firstName }} {{ report.reporter.lastName }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ report.reporter.email }}</small>
+                                    </td>
+                                    <td>{{ report.reason|replace({'_': ' '})|title }}</td>
+                                    <td>
+                                        {% if report.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elseif report.status == 'reviewed' %}
+                                            <span class="badge bg-info">Reviewed</span>
+                                        {% elseif report.status == 'resolved' %}
+                                            <span class="badge bg-success">Resolved</span>
+                                        {% elseif report.status == 'dismissed' %}
+                                            <span class="badge bg-secondary">Dismissed</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ report.createdAt|date('M d, Y H:i') }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#reportModal{{ report.id }}">
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal for report details -->
+                                <div class="modal fade" id="reportModal{{ report.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Report Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Reporter:</strong> {{ report.reporter.firstName }} {{ report.reporter.lastName }}</p>
+                                                <p><strong>Reason:</strong> {{ report.reason|replace({'_': ' '})|title }}</p>
+                                                <p><strong>Status:</strong> {{ report.status|title }}</p>
+                                                <p><strong>Description:</strong></p>
+                                                <p>{{ report.description }}</p>
+                                                <p><strong>Submitted:</strong> {{ report.createdAt|date('M d, Y H:i') }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

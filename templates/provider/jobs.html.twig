@@ -134,7 +134,12 @@
                                 </div>
                                 <div style="text-align: right;">
                                     <h3 style="color: var(--text-main); margin-bottom: 10px;">{{ job.price }} TND</h3>
-                                    <button class="btn btn-primary apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                                    <div style="display: flex; gap: 5px; justify-content: flex-end;">
+                                        <button class="btn btn-primary apply-btn" data-job-id="{{ job.id }}">Apply Now</button>
+                                        <a href="{{ path('app_report_create', {'userId': job.client.userAccount.id}) }}" class="btn" style="background-color: #e74c3c; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px;" title="Report this client">
+                                            <i class="fas fa-flag"></i> Report
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

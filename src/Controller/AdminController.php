@@ -7,6 +7,7 @@ use App\Entity\Provider;
 use App\Entity\Client;
 use App\Entity\Command;
 use App\Entity\Category;
+use App\Entity\Report;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -155,5 +156,17 @@ class AdminController extends AbstractController
     public function settings(): Response
     {
         return $this->render('admin/settings.html.twig');
+    }
+
+    #[Route('/reports', name: 'reports')]
+    public function reports(EntityManagerInterface $em): Response
+    {
+        // 1. Fetch the actual report entities from the database sorted by newest first
+        $reports = $em->getRepository(Report::class)->findBy([], ['createdAt' => 'DESC']);
+
+        // 2. Pass the defined collection variable safely to your Twig layout
+        return $this->render('admin/reports.html.twig', [
+            'reports' => $reports,
+        ]);
     }
 }

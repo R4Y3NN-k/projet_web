@@ -70,8 +70,14 @@
                 {% for profile in providers %}
                     {% set proUser = profile.userAccount %}
                     <div class="pro-card">
-                        <img src="https://ui-avatars.com/api/?name={{ proUser.firstName }}+{{ proUser.lastName }}&background=2563eb&color=fff" alt="{{ proUser.firstName }}" class="pro-avatar">
-                        <h3 style="margin-bottom: 5px;">{{ proUser.firstName }} {{ proUser.lastName|slice(0, 1) }}.</h3>
+                        <a href="{{ path('app_provider_profile', {'id': profile.id}) }}" style="text-decoration: none; color: inherit;">
+                            {% if profile.profilePhoto %}
+                                <img src="{{ asset('uploads/providers/' ~ profile.profilePhoto) }}" alt="{{ proUser.firstName }}" class="pro-avatar" style="object-fit: cover;">
+                            {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ proUser.firstName }}+{{ proUser.lastName }}&background=2563eb&color=fff" alt="{{ proUser.firstName }}" class="pro-avatar">
+                            {% endif %}
+                            <h3 style="margin-bottom: 5px;">{{ proUser.firstName }} {{ proUser.lastName|slice(0, 1) }}.</h3>
+                        </a>
                         
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px;">
                             {{ profile.category.name|default('Service Provider') }}
@@ -85,18 +91,33 @@
                         {# DYNAMIC CHAT NAVIGATION: Safe lookup context checks #}
                         {% if user.clientProfile is defined and user.clientProfile.commands is defined and user.clientProfile.commands|length > 0 %}
                             {% set latestJobId = (user.clientProfile.commands|first).id %}
-                            <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box;">
-                                <i class="fas fa-envelope"></i> Contact Pro
-                            </a>
+                            <div style="display: flex; gap: 5px; width: 100%;">
+                                <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; flex: 1; box-sizing: border-box;">
+                                    <i class="fas fa-envelope"></i> Contact Pro
+                                </a>
+                                <a href="{{ path('app_report_create', {'userId': proUser.id}) }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; background-color: #e74c3c; padding: 0 10px;" title="Report this user">
+                                    <i class="fas fa-flag"></i>
+                                </a>
+                            </div>
                         {% elseif active_requests is defined and active_requests|length > 0 %}
                             {% set latestJobId = (active_requests|first).id %}
-                            <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box;">
-                                <i class="fas fa-envelope"></i> Contact Pro
-                            </a>
+                            <div style="display: flex; gap: 5px; width: 100%;">
+                                <a href="{{ path('app_client_chat', {'id': latestJobId, 'provider': profile.id}) }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; flex: 1; box-sizing: border-box;">
+                                    <i class="fas fa-envelope"></i> Contact Pro
+                                </a>
+                                <a href="{{ path('app_report_create', {'userId': proUser.id}) }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; background-color: #e74c3c; padding: 0 10px;" title="Report this user">
+                                    <i class="fas fa-flag"></i>
+                                </a>
+                            </div>
                         {% else %}
-                            <a href="{{ path('app_client_dashboard') }}" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box; background-color: #64748b;" onclick="alert('Please post a service request on your dashboard first before initiating contact with service professionals.');">
-                                <i class="fas fa-envelope"></i> Contact Pro
-                            </a>
+                            <div style="display: flex; gap: 5px; width: 100%;">
+                                <a href="{{ path('app_client_dashboard') }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; flex: 1; background-color: #64748b; box-sizing: border-box;" onclick="alert('Please post a service request on your dashboard first before initiating contact with service professionals.');">
+                                    <i class="fas fa-envelope"></i> Contact Pro
+                                </a>
+                                <a href="{{ path('app_report_create', {'userId': proUser.id}) }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; background-color: #e74c3c; padding: 0 10px;" title="Report this user">
+                                    <i class="fas fa-flag"></i>
+                                </a>
+                            </div>
                         {% endif %}
                     </div>
                 {% else %}

@@ -6,6 +6,7 @@ use App\Entity\Command;
 use App\Entity\Provider;
 use App\Entity\Category;
 use App\Entity\Location;
+use App\Form\ProviderProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProviderController extends AbstractController
 {
@@ -330,6 +332,82 @@ class ProviderController extends AbstractController
             'categories' => $categories,
             'locations' => $locations,
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/provider/profile/{id}', name: 'app_provider_profile')]
+    public function profile(int $id, EntityManagerInterface $em): Response
+    {
+        $provider = $em->getRepository(Provider::class)->find($id);
+
+        if (!$provider) {
+            throw $this->createNotFoundException('Provider not found');
+        }
+
+        $user = $provider->getUserAccount();
+        $completedJobs = $em->getRepository(Command::class)->findBy([
+            'provider' => $provider,
+            'status' => 'Completed'
+        ]);
+
+        return $this->render('provider/profile.html.twig', [
+            'provider' => $provider,
+            'user' => $user,
+            'completedJobs' => count($completedJobs),
+        ]);
+    }
+
+    #[Route('/provider/update-profile', name: 'app_provider_update_profile', methods: ['GET', 'POST'])]
+    public function updateProfile(Request $request, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $provider = $em->getRepository(Provider::class)->findOneBy(['userAccount' => $user]);
+        if (!$provider) {
+            throw $this->createNotFoundException('Provider not found');
+        }
+
+        $form = $this->createForm(ProviderProfileType::class, $provider);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $photoFile = $form->get('profilePhoto')->getData();
+            if ($photoFile) {
+                $newFilename = uniqid() . '.' . $photoFile->guessExtension();
+                
+                try {
+                    $photoFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/uploads/providers',
+                        $newFilename
+                    );
+                    
+                    // Delete old photo if it exists
+                    if ($provider->getProfilePhoto()) {
+                        $oldFile = $this->getParameter('kernel.project_dir') . '/public/uploads/providers/' . $provider->getProfilePhoto();
+                        if (file_exists($oldFile)) {
+                            unlink($oldFile);
+                        }
+                    }
+                    
+                    $provider->setProfilePhoto($newFilename);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Failed to upload profile photo: ' . $e->getMessage());
+                    return $this->redirectToRoute('app_provider_update_profile');
+                }
+            }
+
+            $em->flush();
+            $this->addFlash('success', 'Profile updated successfully!');
+            return $this->redirectToRoute('app_provider_settings');
+        }
+
+        return $this->render('provider/update_profile.html.twig', [
+            'form' => $form,
+            'provider' => $provider,
         ]);
     }
 }
