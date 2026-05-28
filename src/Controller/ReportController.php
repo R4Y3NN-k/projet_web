@@ -114,24 +114,45 @@ class ReportController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $report->setUpdatedAt(new \DateTime());
+            try {
+                $report->setUpdatedAt(new \DateTime());
 
-            $em->persist($report);
+                $em->persist($report);
 
-            $em->flush();
+                $em->flush();
 
 
 
-            $this->addFlash('success', 'Thank you for your report. Our team will review it shortly.');
+                $this->addFlash('success', 'Thank you for your report. Our team will review it shortly.');
 
-            // Redirect back to the referrer page, or home if no referrer
-            $referrer = $request->headers->get('referer');
-            if ($referrer) {
-                return $this->redirect($referrer);
+                // Redirect back to referrer, or to appropriate dashboard
+                $referrer = $request->headers->get('referer');
+                if ($referrer && strpos($referrer, $request->getHost()) !== false) {
+                    return $this->redirect($referrer);
+                }
+
+                // Fallback to appropriate dashboard based on user role
+                if ($this->isGranted('ROLE_CLIENT')) {
+                    return $this->redirectToRoute('app_client_dashboard');
+                } elseif ($this->isGranted('ROLE_PROVIDER')) {
+                    return $this->redirectToRoute('app_provider_dashboard');
+                }
+
+                return $this->redirectToRoute('app_home');
+
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'An error occurred while submitting your report. Please try again.');
+                return $this->redirectToRoute('app_home');
             }
 
-            return $this->redirectToRoute('app_home');
+        }
 
+        // Display any form errors if form was submitted but invalid
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $errors = $form->getErrors(true);
+            foreach ($errors as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
         }
 
 
