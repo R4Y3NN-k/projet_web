@@ -124,6 +124,12 @@ class ReportController extends AbstractController
 
             $this->addFlash('success', 'Thank you for your report. Our team will review it shortly.');
 
+            // Redirect back to the referrer page, or home if no referrer
+            $referrer = $request->headers->get('referer');
+            if ($referrer) {
+                return $this->redirect($referrer);
+            }
+
             return $this->redirectToRoute('app_home');
 
         }
@@ -140,7 +146,43 @@ class ReportController extends AbstractController
 
     }
 
+    #[Route('/my-reports', name: 'app_report_my')]
+    public function myReports(EntityManagerInterface $em): Response
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
+        }
 
+        // Get all reports submitted by the current user
+        $reports = $em->getRepository(Report::class)->findBy(
+            ['reporter' => $currentUser],
+            ['createdAt' => 'DESC']
+        );
+
+        return $this->render('report/my_reports.html.twig', [
+            'reports' => $reports,
+        ]);
+    }
+
+    #[Route('/against-me', name: 'app_report_against_me')]
+    public function reportsAgainstMe(EntityManagerInterface $em): Response
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Get all reports against the current user
+        $reports = $em->getRepository(Report::class)->findBy(
+            ['reportedUser' => $currentUser],
+            ['createdAt' => 'DESC']
+        );
+
+        return $this->render('report/reports_against_me.html.twig', [
+            'reports' => $reports,
+        ]);
+    }
 
    
 

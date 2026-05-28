@@ -130,8 +130,8 @@
                                         {% endif %}
                                     </td>
                                     <td style="padding: 12px;">
-                                        {% if report.relatedCommandId %}
-                                            <span style="font-weight: 600;">#{{ report.relatedCommandId }}</span>
+                                        {% if report.relatedCommand %}
+                                            <span style="font-weight: 600;">#{{ report.relatedCommand.id }}</span>
                                         {% else %}
                                             <span style="color: var(--text-muted);">-</span>
                                         {% endif %}
@@ -141,13 +141,13 @@
                                     </td>
                                     <td style="padding: 12px;">
                                         <span style="background: 
-                                            {% if report.status == 'Pending' or report.status == 'open' %} #fff7e6
-                                            {% elseif report.status == 'In Progress' %} #e6f2ff
+                                            {% if report.status == 'pending' or report.status == 'open' %} #fff7e6
+                                            {% elseif report.status == 'reviewed' %} #e6f2ff
                                             {% else %} #f0f7f0
                                             {% endif %};
                                             color: 
-                                            {% if report.status == 'Pending' or report.status == 'open' %} #b45309
-                                            {% elseif report.status == 'In Progress' %} #0369a1
+                                            {% if report.status == 'pending' or report.status == 'open' %} #b45309
+                                            {% elseif report.status == 'reviewed' %} #0369a1
                                             {% else %} #059669
                                             {% endif %};
                                             border-radius: 9999px; padding: 6px 12px; font-size: 0.8rem; font-weight: 500;">
