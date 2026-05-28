@@ -24,6 +24,15 @@
                 <h2>Find a Professional 🔍</h2>
             </div>
 
+            {# INLINE FLASH CARD: Controlled cleanly via JS state toggles without forcing page reloads #}
+            <div id="inline-warning-card" style="display: none; padding: 14px 20px; margin-bottom: 25px; border-radius: 8px; font-weight: 500; font-size: 0.95rem; align-items: center; justify-content: space-between; gap: 12px; background-color: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-exclamation-circle" style="font-size: 1.1rem;"></i>
+                    <span>Please post a service request on your dashboard first before initiating contact with service professionals.</span>
+                </div>
+                <button type="button" onclick="document.getElementById('inline-warning-card').style.display = 'none'" style="background: none; border: none; color: #dc2626; cursor: pointer; font-size: 1.2rem; font-weight: bold; padding: 0 5px;">&times;</button>
+            </div>
+
             {# Unified search filter mechanism form submission #}
             <form action="{{ path('app_client_professionals') }}" method="get" class="filter-bar" style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <input type="text" name="query" value="{{ current_query }}" placeholder="Search by name or keyword...">
@@ -35,32 +44,12 @@
                     {% endfor %}
                 </select>
 
+                {# UPDATED: Clean, dynamic loop pulling from your database locations #}
                 <select name="location">
                     <option value="">All Regions</option>
-                    <option value="Tunis" {{ current_location == 'Tunis' ? 'selected' : '' }}>Tunis</option>
-                    <option value="Sousse" {{ current_location == 'Sousse' ? 'selected' : '' }}>Sousse</option>
-                    <option value="Sfax" {{ current_location == 'Sfax' ? 'selected' : '' }}>Sfax</option>
-                    <option value="Ariana" {{ current_location == 'Ariana' ? 'selected' : '' }}>Ariana</option>
-                    <option value="Béja" {{ current_location == 'Béja' ? 'selected' : '' }}>Béja</option>
-                    <option value="Bizerte" {{ current_location == 'Bizerte' ? 'selected' : '' }}>Bizerte</option>
-                    <option value="Gabès" {{ current_location == 'Gabès' ? 'selected' : '' }}>Gabès</option>
-                    <option value="Gafsa" {{ current_location == 'Gafsa' ? 'selected' : '' }}>Gafsa</option>
-                    <option value="Kairouan" {{ current_location == 'Kairouan' ? 'selected' : '' }}>Kairouan</option>
-                    <option value="Kasserine" {{ current_location == 'Kasserine' ? 'selected' : '' }}>Kasserine</option>
-                    <option value="Kebili" {{ current_location == 'Kebili' ? 'selected' : '' }}>Kebili</option>
-                    <option value="Mahdia" {{ current_location == 'Mahdia' ? 'selected' : '' }}>Mahdia</option>
-                    <option value="Manouba" {{ current_location == 'Manouba' ? 'selected' : '' }}>Manouba</option>
-                    <option value="Medenine" {{ current_location == 'Medenine' ? 'selected' : '' }}>Medenine</option>
-                    <option value="Monastir" {{ current_location == 'Monastir' ? 'selected' : '' }}>Monastir</option>
-                    <option value="Nabeul" {{ current_location == 'Nabeul' ? 'selected' : '' }}>Nabeul</option>
-                    <option value="Sidi Bouzid" {{ current_location == 'Sidi Bouzid' ? 'selected' : '' }}>Sidi Bouzid</option>
-                    <option value="Siliana" {{ current_location == 'Siliana' ? 'selected' : '' }}>Siliana</option>
-                    <option value="Tataouine" {{ current_location == 'Tataouine' ? 'selected' : '' }}>Tataouine</option>
-                    <option value="Tozeur" {{ current_location == 'Tozeur' ? 'selected' : '' }}>Tozeur</option>
-                    <option value="Zaghouan" {{ current_location == 'Zaghouan' ? 'selected' : '' }}>Zaghouan</option>
-                    <option value="Ben Arous" {{ current_location == 'Ben Arous' ? 'selected' : '' }}>Ben Arous</option>
-                    <option value="Kef" {{ current_location == 'Kef' ? 'selected' : '' }}>Kef</option>
-                    <option value="Jendouba" {{ current_location == 'Jendouba' ? 'selected' : '' }}>Jendouba</option>
+                    {% for loc in locations %}
+                        <option value="{{ loc.id }}" {{ current_location == loc.id ? 'selected' : '' }}>{{ loc.name }}</option>
+                    {% endfor %}
                 </select>
 
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -110,6 +99,7 @@
                                 </a>
                             </div>
                         {% else %}
+<<<<<<< HEAD
                             <div style="display: flex; gap: 5px; width: 100%;">
                                 <a href="{{ path('app_client_dashboard') }}" class="btn-chat-action" style="display: flex; align-items: center; justify-content: center; flex: 1; background-color: #64748b; box-sizing: border-box;" onclick="alert('Please post a service request on your dashboard first before initiating contact with service professionals.');">
                                     <i class="fas fa-envelope"></i> Contact Pro
@@ -118,6 +108,12 @@
                                     <i class="fas fa-flag"></i>
                                 </a>
                             </div>
+=======
+                            {# UPDATED: Displays the inline alert component instantly on click #}
+                            <button type="button" class="btn-chat-action" style="display: block; width: 100%; text-align: center; box-sizing: border-box; background-color: #64748b; border: none; cursor: pointer;" onclick="document.getElementById('inline-warning-card').style.display = 'flex'; window.scrollTo({top: 0, behavior: 'smooth'});">
+                                <i class="fas fa-envelope"></i> Contact Pro
+                            </button>
+>>>>>>> ae9be589d8878e79ae828a80e91a2a1325b85184
                         {% endif %}
                     </div>
                 {% else %}
